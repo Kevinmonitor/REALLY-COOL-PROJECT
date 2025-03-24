@@ -1,0 +1,102 @@
+[gd_scene load_steps=8 format=3 uid="uid://cn1hyq7obgxg8"]
+
+[ext_resource type="Script" path="res://Controllers/PlatformerPlayer/UltimatePlatformerController.gd" id="1_ujg73"]
+[ext_resource type="Texture2D" uid="uid://dh1d476thjub8" path="res://addons/kenney pixel platformer/tilemap/characters_packed.png" id="2_sa3cg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7tjxk"]
+size = Vector2(34, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8motv"]
+atlas = ExtResource("2_sa3cg")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_12efn"]
+atlas = ExtResource("2_sa3cg")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_biobs"]
+atlas = ExtResource("2_sa3cg")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_giok0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8motv")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_12efn")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_biobs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_12efn")
+}],
+"loop": true,
+"name": &"run",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_biobs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_12efn")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
+
+[node name="PlayerController" type="CharacterBody2D" node_paths=PackedStringArray("PlayerSprite", "PlayerCollider", "Text")]
+script = ExtResource("1_ujg73")
+PlayerSprite = NodePath("AnimatedSprite2D")
+PlayerCollider = NodePath("CollisionShape2D")
+Text = NodePath("RichTextLabel")
+maxSpeed = 500.0
+normalMaxSpeed = 500.0
+dashSpeed = 1500.0
+timeToReachMaxSpeed = 0.1
+timeToReachZeroSpeed = 0.1
+jumpHeight = 1.0
+gravityScale = 80.0
+terminalVelocity = 800.0
+wallJump = true
+wallSliding = 2.0
+dashType = 4
+dashLength = 2.0
+run = true
+jump = true
+idle = true
+walk = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_7tjxk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_giok0")
+animation = &"run"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = -65.0
+offset_top = -64.0
+offset_right = 137.0
+offset_bottom = -24.0
+theme_override_font_sizes/normal_font_size = 12
+text = "max speed"

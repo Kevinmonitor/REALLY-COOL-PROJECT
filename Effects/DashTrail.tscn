@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4kwom1y7e5gf"]
+
+[ext_resource type="Script" uid="uid://bnmoxctxssy21" path="res://Effects/DashTrail.gd" id="1_6xwdu"]
+[ext_resource type="Material" uid="uid://dei4vt6ihtx8u" path="res://Effects/DashTrail.tres" id="1_us6an"]
+
+[node name="DashTrail" type="AnimatedSprite2D"]
+z_index = 2
+material = ExtResource("1_us6an")
+script = ExtResource("1_6xwdu")
