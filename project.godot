@@ -14,7 +14,7 @@ metroidvania_system/settings_file="res://MetSysSettings.tres"
 
 [application]
 
-config/name="MVM2024"
+config/name="EXISTING PLATFORMER PROJECT"
 run/main_scene="res://Global/MainGame.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
