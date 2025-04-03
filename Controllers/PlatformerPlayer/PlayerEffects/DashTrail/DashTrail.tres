@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dei4vt6ihtx8u"]
 
-[ext_resource type="Shader" uid="uid://btby073okdf8j" path="res://Effects/DashTrail.gdshader" id="1_hrijq"]
+[ext_resource type="Shader" uid="uid://btby073okdf8j" path="res://Controllers/PlatformerPlayer/PlayerEffects/DashTrail/DashTrail.gdshader" id="1_hrijq"]
 
 [resource]
 shader = ExtResource("1_hrijq")
