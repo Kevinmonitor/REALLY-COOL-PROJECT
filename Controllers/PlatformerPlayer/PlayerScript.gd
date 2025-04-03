@@ -2,145 +2,179 @@ extends CharacterBody2D
 
 class_name PlatformerController2D
 
-@export var README: String = "IMPORTANT: MAKE SURE TO ASSIGN 'left' 'right' 'jump' 'dash' 'up' 'down' 'roll' 'latch' 'run' 'twirl' in the project settings input map. Usage tips. 1. Hover over each toggle and variable to read what it does and to make sure nothing bugs. 2. Animations are very primitive. To make full use of your custom art, you may want to slightly change the code for the animations"
+#INFO KEVIN'S BASIC CHARACTER CONTROLLER 
 
-#INFO READEME 
-#IMPORTANT: MAKE SURE TO ASSIGN 'left' 'right' 'jump' 'dash' 'up' 'down' 'roll' 'latch' 'run' 'twirl' in the project settings input map. THIS IS REQUIRED
-#Usage tips. 
-#1. Hover over each toggle and variable to read what it does and to make sure nothing bugs. 
-#2. Animations are very primitive. To make full use of your custom art, you may want to slightly change the code for the animations
+## This is an expansive template for a 2D Platformer Character Controller. It goes a step further than just movement and jumping, featuring builtin support for more complex mechanics: dashing, attacking, and wall-jumping/sliding.
+
+## You can toggle and disable the complex features as you please.
+
+## Some effort is required from you (the user) to implement this into a game of your choice (you do, at the very least, need a level with a few blocks placed around...). Specifically, it is up to you to provide custom sprite graphics, though you may use the default sprites it comes with. 
+
+#INFO CHILD NODES
 
 @export_category("Necessary Child Nodes")
-@export var PlayerSprite: AnimatedSprite2D
-@export var PlayerCollider: CollisionShape2D
-@export var WallRaycast: RayCast2D
-@export var FloorRaycast: RayCast2D
-@export var DashProgress: TextureProgressBar
-@export var Text: RichTextLabel
-@export var SlashAttack: Area2D
+
+@export var PlayerSprite: AnimatedSprite2D ## Player sprite
+@export var PlayerCollider: CollisionShape2D ## Player collision box
+
+@export_category("Optional Child Nodes")
+
+@export var WallRaycast: RayCast2D ## For if you want to implement wall-sliding and wall-jumps.
+@export var DashProgress: TextureProgressBar ## For the dashing mechanic's visuals.
+@export var Text: RichTextLabel ## Debug text. Do whatever you want with it.
+@export var SlashAttack: Area2D ## For the slashing/combat mechanic.
+
+#INFO REQUIRED MECHANICS
+## You need these for any platformer.
 
 #INFO HORIZONTAL MOVEMENT 
-@export_category("L/R Movement")
-##The max speed your player will move
-@export_range(50, 9999) var maxSpeed: float = 200.0
-@export_range(50, 9999) var normalMaxSpeed: float = 200.0
-@export_range(50, 9999) var dashSpeed: float = 200.0
 
-##How fast your player will reach max speed from rest (in seconds)
+@export_category("L/R Movement")
+
+## The max speed your player will move
+
+@export_range(50, 9999) var maxSpeed: float = 200.0
+
+@export_range(50, 9999) var normalMaxSpeed: float = 200.0
+
+@export_range(50, 9999) var dashSpeed: float = 200.0 ## Dash speed. For dashing.
+
+## How fast your player will reach max speed from rest (in seconds)
 @export_range(0, 4) var timeToReachMaxSpeed: float = 0.2
-##How fast your player will reach zero speed from max speed (in seconds)
+
+## How fast your player will reach zero speed from max speed (in seconds)
 @export_range(0, 4) var timeToReachZeroSpeed: float = 0.2
-##If true, player will instantly move and switch directions. Overrides the "timeToReach" variables, setting them to 0.
+
+## If true, player will instantly move and switch directions. Overrides the "timeToReach" variables, setting them to 0.
 @export var directionalSnap: bool = false
-##If enabled, the default movement speed will by 1/2 of the maxSpeed and the player must hold a "run" button to accelerate to max speed. Assign "run" (case sensitive) in the project input settings.
+
+## If enabled, the default movement speed will by 1/2 of the maxSpeed and the player must hold a "run" button to accelerate to max speed. Assign "run" (case sensitive) in the project input settings.
 @export var runningModifier: bool = false
 
 #INFO JUMPING 
 @export_category("Jumping and Gravity")
-##The peak height of your player's jump
+
+## Max jump height. 
 @export_range(0, 20) var jumpHeight: float = 2.0
-##How many jumps your character can do before needing to touch the ground again. Giving more than 1 jump disables jump buffering and coyote time.
+## Number of jumps allowed before your player needs to touch the ground.
 @export_range(0, 4) var jumps: int = 1
-##The strength at which your character will be pulled to the ground.
+## The strength at which your character will be pulled to the ground.
 @export_range(0, 100) var gravityScale: float = 20.0
-##The fastest your player can fall
+## Maximum fall speed.
 @export_range(0, 1000) var terminalVelocity: float = 500.0
-##Your player will move this amount faster when falling providing a less floaty jump curve.
+## Horizontal movement of the player will be faster by this much - use for smoother jump curves.
 @export_range(0.5, 3) var descendingGravityFactor: float = 1.3
-##Enabling this toggle makes it so that when the player releases the jump key while still ascending, their vertical velocity will cut in half, providing variable jump height.
-@export var shortHopAkaVariableJumpHeight: bool = true
-##How much extra time (in seconds) your player will be given to jump after falling off an edge. This is set to 0.2 seconds by default.
+## Variable jump height toggle: if the player jumps and immediately releases the key, they jump shorter.
+@export var shortJump: bool = true
+## How much extra time (in seconds) your player will be given to jump after falling off an edge. This is set to 0.2 seconds by default.
 @export_range(0, 0.5) var coyoteTime: float = 0.2
-##The window of time (in seconds) that your player can press the jump button before hitting the ground and still have their input registered as a jump. This is set to 0.2 seconds by default.
+## The window of time (in seconds) that your player can press the jump button before hitting the ground and still have their input registered as a jump. This is set to 0.2 seconds by default.
 @export_range(0, 0.5) var jumpBuffering: float = 0.2
 
-#INFO EXTRAS
+## INFO EXTRA MECHANICS
+## Disable, enable and tweak these as you please.
+
+## 1. WALL JUMPING (AND SLIDING)
+
 @export_category("Wall Jumping")
-##Allows your player to jump off of walls. Without a Wall Kick Angle, the player will be able to scale the wall.
+
+## Allows your player to jump off of walls. Without a Wall Kick Angle, the player will be able to scale the wall.
 @export var wallJump: bool = false
-##How long the player's movement input will be ignored after wall jumping.
+
+## How long the player's movement input will be ignored after wall jumping.
 @export_range(0, 0.5) var inputPauseAfterWallJump: float = 0.1
-##The angle at which your player will jump away from the wall. 0 is straight away from the wall, 90 is straight up. Does not account for gravity
+
+## The angle at which your player will jump away from the wall. 0 is straight away from the wall, 90 is straight up. Does not account for gravity
 @export_range(0, 90) var wallKickAngle: float = 60.0
-##The player's gravity will be divided by this number when touch a wall and descending. Set to 1 by default meaning no change will be made to the gravity and there is effectively no wall sliding. THIS IS OVERRIDDED BY WALL LATCH.
+
+## The player's gravity will be divided by this number when touch a wall and descending. Set to 1 by default meaning no change will be made to the gravity and there is effectively no wall sliding.
 @export_range(1, 20) var wallSliding: float = 1.0
-##If enabled, the player's gravity will be set to 0 when touching a wall and descending. THIS WILL OVERRIDE WALLSLIDING.
-@export var wallLatching: bool = false
-##wall latching must be enabled for this to work. #If enabled, the player must hold down the "latch" key to wall latch. Assign "latch" in the project input settings. The player's input will be ignored when latching.
-@export var wallLatchingModifer: bool = false
+
+## 2. SLASHING FOR COMBAT
 
 @export_category("Slashing")
-@export var slashCooldown: float = 1.0
-@export var slashTime: float = 0.5
-var isSlashReady: bool = true
+
+@export var slashCooldown: float = 1.0 ## Cooldown between each slash. Set to 0 and the player can slash constantly as fast as they press the button.
+@export var slashTime: float = 0.5 ## The time each slash takes.
+var isSlashReady: bool = true ## Check for whether the cooldown of the previous attack has ended (allowing for the next)
+
+## 3. DASHING
 
 @export_category("Dashing")
-##The type of dashes the player can do.
+
+## The type of dashes the player can do.
 @export_enum("None", "Horizontal", "Vertical", "Four Way", "Eight Way") var dashType: int
-##How many dashes your player can do before needing to hit the ground.
+
+## How many dashes your player can do before needing to hit the ground.
 @export_range(0, 10) var dashes: int = 1
-##If enabled, pressing the opposite direction of a dash, during a dash, will zero the player's velocity.
+
+## If enabled, pressing the opposite direction of a dash, during a dash, will zero the player's velocity.
 @export var dashCancel: bool = true
-##How far the player will dash. One of the dashing toggles must be on for this to be used.
+
+## How far the player will dash. Sort of a multiplier/timer?.
 @export_range(1.5, 4) var dashLength: float = 2.5
 
-# charged dash
+## Variables for when you want a dash that requires charging. Set both to 0, if you want instantaneous dashes.
 
 @export var dashChargeTime: float = 1.0
-@export var dashChargeGracePeriod: float = 0.2 # after releasing dash button you have a small period to re-press it before dash charge resets.
+@export var dashChargeGracePeriod: float = 0.2 ## After releasing dash button you have a small period to re-press it before dash charge resets.
 
-# reference to dashtrail
-var dashEffect = preload("res://Effects/DashTrail.tscn")
+## Reference to a visual effect for ghost trails. Used for the dash. Replace with your own, or comment it out. Scroll down a bit to see how this is used.
+# Remember, you need the preload function. 
+
+@export var dashEffect = preload("res://Controllers/PlatformerPlayer/PlayerEffects/DashTrail/DashTrail.tscn")
+
+## 4. CORNER CUTTING/JUMP CORRECTION
 
 @export_category("Corner Cutting/Jump Correct")
-##If the player's head is blocked by a jump but only by a little, the player will be nudged in the right direction and their jump will execute as intended. NEEDS RAYCASTS TO BE ATTACHED TO THE PLAYER NODE. AND ASSIGNED TO MOUNTING RAYCAST. DISTANCE OF MOUNTING DETERMINED BY PLACEMENT OF RAYCAST.
+
+## If the player's head is blocked by a jump but only by a little, the player will be nudged in the right direction and their jump will execute as intended. Requires three raycasts to be attached to the player (see below).
+
 @export var cornerCutting: bool = false
-##How many pixels the player will be pushed (per frame) if corner cutting is needed to correct a jump.
+
+## How many pixels the player will be pushed (per frame) if corner cutting is needed to correct a jump.
 @export_range(1, 5) var correctionAmount: float = 1.5
-##Raycast used for corner cutting calculations. Place above and to the left of the players head point up. ALL ARE NEEDED FOR IT TO WORK.
-@export var leftRaycast: RayCast2D
-##Raycast used for corner cutting calculations. Place above of the players head point up. ALL ARE NEEDED FOR IT TO WORK.
-@export var middleRaycast: RayCast2D
-##Raycast used for corner cutting calculations. Place above and to the right of the players head point up. ALL ARE NEEDED FOR IT TO WORK.
-@export var rightRaycast: RayCast2D
+## Raycast used for corner cutting calculations. Place above and to the left of the players head point up. ALL ARE NEEDED FOR IT TO WORK.
+@export var leftCornerRaycast: RayCast2D
+## Raycast used for corner cutting calculations. Place above of the players head point up.
+@export var middleCornerRaycast: RayCast2D
+## Raycast used for corner cutting calculations. Place above and to the right of the players head point up.
+@export var rightCornerRaycast: RayCast2D
+
+## 4. CROUCHING, ROLLING, GROUND-POUNDS
 
 @export_category("Down Input")
-##Holding down will crouch the player. Crouching script may need to be changed depending on how your player's size proportions are. It is built for 32x player's sprites.
+
+#Holding down will crouch the player. Crouching script may need to be changed depending on how your player's size proportions are. It is built for 32x player's sprites.
 @export var crouch: bool = false
-##Holding down and pressing the input for "roll" will execute a roll if the player is grounded. Assign a "roll" input in project settings input.
-@export var canRoll: bool
+
+#Holding down and pressing the input for "roll" will execute a roll if the player is grounded. Assign a "roll" input in project settings input.
+@export var canRoll: bool = false 
 @export_range(1.25, 2) var rollLength: float = 2
-##If enabled, the player will stop all horizontal movement midair, wait (groundPoundPause) seconds, and then slam down into the ground when down is pressed. 
+
+#If enabled, the player will stop all horizontal movement midair, wait (groundPoundPause) seconds, and then slam down into the ground when down is pressed. 
 @export var groundPound: bool
-##The amount of time the player will hover in the air before completing a ground pound (in seconds)
+
+#The amount of time the player will hover in the air before completing a ground pound (in seconds)
 @export_range(0.05, 0.75) var groundPoundPause: float = 0.25
-##If enabled, pressing up will end the ground pound early
+
+#If enabled, pressing up will end the ground pound early
 @export var upToCancel: bool = false
 
-@export_category("Animations (Check Box if has animation)")
-##Animations must be named "run" all lowercase as the check box says
-@export var run: bool
-##Animations must be named "jump" all lowercase as the check box says
-@export var jump: bool
-##Animations must be named "idle" all lowercase as the check box says
-@export var idle: bool
-##Animations must be named "walk" all lowercase as the check box says
-@export var walk: bool
-##Animations must be named "slide" all lowercase as the check box says
-@export var slide: bool
-##Animations must be named "latch" all lowercase as the check box says
-@export var latch: bool
-##Animations must be named "falling" all lowercase as the check box says
-@export var falling: bool
-##Animations must be named "crouch_idle" all lowercase as the check box says
-@export var crouch_idle: bool
-##Animations must be named "crouch_walk" all lowercase as the check box says
-@export var crouch_walk: bool
-##Animations must be named "roll" all lowercase as the check box says
-@export var roll: bool
-var slash: bool
+#INFO ANIMATIONS
+##Animations must be named all lowercase as the check box says.
 
-#Variables determined by the developer set ones.
+@export_category("Animations (Check Box if has animation)")
+
+@export var run: bool
+@export var jump: bool
+@export var idle: bool
+@export var slide: bool
+@export var falling: bool
+@export var slash: bool
+
+# Variables to be used and changed while the game is running.
+# Unless you have a good reason to, it's best to avoid tweaking these.
 var appliedGravity: float
 var maxSpeedLock: float
 var appliedTerminalVelocity: float
@@ -180,8 +214,6 @@ var dset = false
 var colliderScaleLockY
 var colliderPosLockY
 
-var latched
-var wasLatched
 var crouching
 var groundPounding
 
@@ -212,28 +244,39 @@ var isReleaseCharge
 
 var damageBuffer: float = 0
 
-# bonus stuff
+#INFO BONUS STUFF
+# These are functions specific to my own game - but you can reference the code here if you want.
+# It is rather specifically tailored to a certain system, and will likely not make 100% sense, but it's there.
 
-var reset_position: Vector2
-# Indicates that the player has an event happening and can't be controlled.
-var event: bool
-
-# hit by spike. player returns to start of room. subtract HP
-func _owFuck():
+#var reset_position: Vector2
+## Indicates that the player has an event happening and can't be controlled.
+#var event: bool
+#
+## hit by spike. player returns to start of room. subtract HP
+#func _owFuck():
+	#
+	#if damageBuffer > 0: pass
+	#else:
+		#MainGame.get_singleton().updateHP(-1)
+		#print(MainGame.get_singleton().playerCurrentHP)
+		#_startDamageBuffer()
+		#if MainGame.get_singleton().playerCurrentHP > 0:
+			#position = reset_position
+			#MainGame.get_singleton().load_room(MetSys.get_current_room_name())
+#
+#func _startDamageBuffer():
+	#damageBuffer = 1
+	#await get_tree().create_timer(0.25).timeout
+	#damageBuffer = 0
 	
-	if damageBuffer > 0: pass
-	else:
-		MainGame.get_singleton().updateHP(-1)
-		print(MainGame.get_singleton().playerCurrentHP)
-		_startDamageBuffer()
-		if MainGame.get_singleton().playerCurrentHP > 0:
-			position = reset_position
-			MainGame.get_singleton().load_room(MetSys.get_current_room_name())
-
-func _startDamageBuffer():
-	damageBuffer = 1
-	await get_tree().create_timer(0.25).timeout
-	damageBuffer = 0
+#func kill():
+	## Player dies, reset the position to the entrance.
+	#position = reset_position
+	#MainGame.get_singleton().load_room(MetSys.get_current_room_name())
+#
+#func on_enter():
+	## Position for kill system. Assigned when entering new room.
+	#reset_position = position
 	
 func _ready():
 	
@@ -312,17 +355,10 @@ func _process(_delta):
 	
 	#INFO animations
 	#directions
-	
-	if WallRaycast.is_colliding() and !is_on_floor() and latch and wallLatching and ((wallLatchingModifer and latchHold) or !wallLatchingModifer):
-		latched = true
-	else:
-		latched = false
-		wasLatched = true
-		_setLatch(0.2, false)
 
-	if rightHold and !latched:
+	if rightHold:
 		anim.scale.x = animScaleLock.x
-	if leftHold and !latched:
+	if leftHold:
 		anim.scale.x = animScaleLock.x *- 1		
 	if anim.scale.x == animScaleLock.x * -1:
 		WallRaycast.scale.x = -1
@@ -356,28 +392,6 @@ func _process(_delta):
 				anim.speed_scale = 1
 				anim.play("falling")
 		
-	#if latch and slide:
-		##wall slide and latch
-		#if latched and !wasLatched:
-			#anim.speed_scale = 1
-			#anim.play("latch")
-		#if WallRaycast.is_colliding() and velocity.y > 0 and slide and anim.animation != "slide" and wallSliding != 1:
-			#anim.speed_scale = 1
-			#anim.play("slide")
-			#
-		##crouch
-		#if crouching and !rolling:
-			#if abs(velocity.x) > 10:
-				#anim.speed_scale = 1
-				#anim.play("crouch_walk")
-			#else:
-				#anim.speed_scale = 1
-				#anim.play("crouch_idle")
-		#
-		#if rollTap and canRoll and roll:
-			#anim.speed_scale = 1
-			#anim.play("roll")
-			#
 	_handleDashProgressBar()
 		
 func _handleDashProgressBar():
@@ -534,19 +548,8 @@ func _physics_process(delta):
 	
 		slide = true
 		appliedTerminalVelocity = terminalVelocity / wallSliding
-		
-		if wallLatching and ((wallLatchingModifer and latchHold) or !wallLatchingModifer):
-			appliedGravity = 0
 			
-			if velocity.y < 0:
-				velocity.y += 50
-			if velocity.y > 0:
-				velocity.y = 0
-				
-			if wallLatchingModifer and latchHold and movementInputMonitoring == Vector2(true, true):
-				velocity.x = 0
-			
-		elif wallSliding != 1 and velocity.y > 0:
+		if wallSliding != 1 and velocity.y > 0:
 			appliedGravity = appliedGravity / wallSliding
 			
 	elif !WallRaycast.is_colliding() and !groundPounding:
@@ -564,7 +567,7 @@ func _physics_process(delta):
 		elif velocity.y > appliedTerminalVelocity:
 			velocity.y = appliedTerminalVelocity
 		
-	if shortHopAkaVariableJumpHeight and jumpRelease and velocity.y < 0 and !dashing:
+	if shortJump and jumpRelease and velocity.y < 0 and !dashing:
 		velocity.y = velocity.y / 2
 	
 	if jumps >= 1:
@@ -587,14 +590,14 @@ func _physics_process(delta):
 		elif jumpTap and WallRaycast.is_colliding and !is_on_floor():
 			
 			if !dashing:
-				if wallJump and !latched:
+				if wallJump:
 					_wallJump()
-				elif wallJump and latched:
+				elif wallJump :
 					_wallJump()
 			else:
-				if wallJump and !latched:
+				if wallJump:
 					_superWallJump()
-				elif wallJump and latched:
+				elif wallJump:
 					_superWallJump()
 				
 		elif jumpTap and is_on_floor():
@@ -617,9 +620,9 @@ func _physics_process(delta):
 	
 	#INFO Corner Cutting
 	if cornerCutting:
-		if velocity.y < 0 and leftRaycast.is_colliding() and !rightRaycast.is_colliding() and !middleRaycast.is_colliding():
+		if velocity.y < 0 and leftCornerRaycast.is_colliding() and !rightCornerRaycast.is_colliding() and !middleCornerRaycast.is_colliding():
 			position.x += correctionAmount
-		if velocity.y < 0 and !leftRaycast.is_colliding() and rightRaycast.is_colliding() and !middleRaycast.is_colliding():
+		if velocity.y < 0 and !leftCornerRaycast.is_colliding() and rightCornerRaycast.is_colliding() and !middleCornerRaycast.is_colliding():
 			position.x -= correctionAmount
 			
 	#INFO Ground Pound
@@ -640,13 +643,13 @@ func _fallOneWay():
 	if downTap and is_on_floor():
 		position.y += 10
 
-# if: release dash button, and gauge is not 100%, slash. 
-# enable slash hitbox and play slash animation
+## if: release dash button, and gauge is not 100%, slash. 
+## enable slash hitbox and play slash animation
 func _slashAttack():
 	if isSlashReady and dashTap and currentCharge < dashChargeTime and !slide:
 		SlashAttack._activateSlash()
 		await get_tree().create_timer(slashTime).timeout
-		# then, cooldown slash
+		## then, cooldown slash
 		_slashCooldown()
 		
 func _slashCooldown():
@@ -668,7 +671,7 @@ func _chargeGracePeriod():
 		pass
 	else:
 		currentCharge = 0.0
-		# reset dashChargeGracePeriod
+		## reset dashChargeGracePeriod
 		dashChargeGracePeriod = 0.1
 	
 func _handleDash():
@@ -680,7 +683,7 @@ func _handleDash():
 		dashCount = dashes
 		dashChargeGracePeriod = 0.1
 		
-	# if you release dash when at 100% OR you press dash at 100%
+	## if you release dash when at 100% OR you press dash at 100%
 	if eightWayDash and dashCount > 0 and !rolling and ( (isReleaseCharge and currentCharge >= dashChargeTime) or (dashTap and currentCharge >= dashChargeTime) ):
 		
 		var input_direction = Input.get_vector("left", "right", "up", "down")
@@ -725,7 +728,7 @@ func _jump():
 		jumpCount += -1
 		jumpWasPressed = false
 
-# if jumping immediately after a dash, do a super jump with very high velocity
+## if jumping immediately after a dash, do a super jump with very high velocity
 
 func _superJump():
 	print("superjump")
@@ -742,8 +745,7 @@ func _wallJump():
 	var verticalWallKick = abs(jumpMagnitude * sin(wallKickAngle * (PI / 180)))
 	velocity.y = -verticalWallKick * 1.4
 	var dir = 1
-	if wallLatchingModifer and latchHold:
-		dir = -1
+	
 	if wasMovingR:
 		velocity.x = -horizontalWallKick  * dir * 1.8
 	else:
@@ -760,8 +762,7 @@ func _superWallJump():
 	velocity.y = -verticalWallKick * 2.0
 	
 	var dir = 1
-	if wallLatchingModifer and latchHold:
-		dir = -1
+
 	if wasMovingR:
 		velocity.x = -horizontalWallKick * dir * 1.25
 	else:
@@ -769,10 +770,6 @@ func _superWallJump():
 	if inputPauseAfterWallJump != 0:
 		movementInputMonitoring = Vector2(false, false)
 		_inputPauseReset(inputPauseAfterWallJump)
-			
-func _setLatch(delay, setBool):
-	await get_tree().create_timer(delay).timeout
-	wasLatched = setBool
 			
 func _inputPauseReset(time):
 	await get_tree().create_timer(time).timeout
@@ -830,14 +827,3 @@ func _endGroundPound():
 
 func _placeHolder():
 	print("")
-
-# die! suffer! explode!
-
-func kill():
-	# Player dies, reset the position to the entrance.
-	position = reset_position
-	MainGame.get_singleton().load_room(MetSys.get_current_room_name())
-
-func on_enter():
-	# Position for kill system. Assigned when entering new room (see Game.gd).
-	reset_position = position
