@@ -122,7 +122,7 @@ var isSlashReady: bool = true ## Check for whether the cooldown of the previous 
 ## Reference to a visual effect for ghost trails. Used for the dash. Replace with your own, or comment it out. Scroll down a bit to see how this is used.
 # Remember, you need the preload function. 
 
-@export var dashEffect = preload("res://Controllers/PlatformerPlayer/PlayerEffects/DashTrail/DashTrail.tscn")
+@export var dashEffect = preload("res://Controller/PlatformerPlayer/PlayerEffects/DashTrail/DashTrail.tscn")
 
 ## 4. CORNER CUTTING/JUMP CORRECTION
 
@@ -421,23 +421,30 @@ func _physics_process(delta):
 	if !dset:
 		gdelta = delta
 		dset = true
-	#INFO Input Detectio. Define your inputs from the project settings here.
+		
+	#INFO Input Detection. Define your inputs from the project settings here.
+	
+	# Note the difference between is_action_pressed and is_action_just_pressed.
+	
 	leftHold = Input.is_action_pressed("left")
 	rightHold = Input.is_action_pressed("right")
 	upHold = Input.is_action_pressed("up")
 	downHold = Input.is_action_pressed("down")
+	
 	leftTap = Input.is_action_just_pressed("left")
 	rightTap = Input.is_action_just_pressed("right")
+	
 	leftRelease = Input.is_action_just_released("left")
 	rightRelease = Input.is_action_just_released("right")
+	
 	jumpTap = Input.is_action_just_pressed("jump")
 	jumpRelease = Input.is_action_just_released("jump")
+	
 	runHold = Input.is_action_pressed("run")
-	latchHold = Input.is_action_pressed("latch")
 	dashTap = Input.is_action_just_pressed("dash")
+	
 	rollTap = Input.is_action_just_pressed("roll")
 	downTap = Input.is_action_just_pressed("down")
-	twirlTap = Input.is_action_just_pressed("twirl")
 	
 	isCharging = Input.is_action_pressed("dash")
 	isReleaseCharge = Input.is_action_just_released("dash")
