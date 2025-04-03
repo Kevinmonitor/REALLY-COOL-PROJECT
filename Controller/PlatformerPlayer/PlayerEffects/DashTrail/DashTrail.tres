@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dei4vt6ihtx8u"]
+
+[ext_resource type="Shader" uid="uid://btby073okdf8j" path="res://Controller/PlatformerPlayer/PlayerEffects/DashTrail/DashTrail.gdshader" id="1_hrijq"]
+
+[resource]
+shader = ExtResource("1_hrijq")
+shader_parameter/whiten = true
+shader_parameter/mix_weight = 1.0
+shader_parameter/color_a = Color(0.2, 0.8, 0.76, 1)
