@@ -229,6 +229,7 @@ descendingGravityFactor = 1.25
 wallJump = true
 wallKickAngle = 45.0
 wallSliding = 5.0
+slashAttack = true
 slashCooldown = 0.1
 slashTime = 0.15
 dashType = 4

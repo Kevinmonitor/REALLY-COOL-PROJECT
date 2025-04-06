@@ -149,20 +149,22 @@ var isSlashReady: bool = true ## Check for whether the cooldown of the previous 
 
 @export_category("Down Input")
 
-#Holding down will crouch the player. Crouching script may need to be changed depending on how your player's size proportions are. It is built for 32x player's sprites.
+# Note that there are no default sprites or animation for this yet.
+
+## Holding down will crouch the player. Crouching script may need to be changed depending on how your player's size proportions are. It is built for 32x player's sprites.
 @export var crouch: bool = false
 
-#Holding down and pressing the input for "roll" will execute a roll if the player is grounded. Assign a "roll" input in project settings input.
+## Holding down and pressing the input for "roll" will execute a roll if the player is grounded. Assign a "roll" input in project settings input.
 @export var canRoll: bool = false 
 @export_range(1.25, 2) var rollLength: float = 2
 
-#If enabled, the player will stop all horizontal movement midair, wait (groundPoundPause) seconds, and then slam down into the ground when down is pressed. 
+## If enabled, the player will stop all horizontal movement midair, wait (groundPoundPause) seconds, and then slam down into the ground when down is pressed. 
 @export var groundPound: bool
 
-#The amount of time the player will hover in the air before completing a ground pound (in seconds)
+## The amount of time the player will hover in the air before completing a ground pound (in seconds)
 @export_range(0.05, 0.75) var groundPoundPause: float = 0.25
 
-#If enabled, pressing up will end the ground pound early
+## If enabled, pressing up will end the ground pound early
 @export var upToCancel: bool = false
 
 #INFO ANIMATIONS
