@@ -94,6 +94,7 @@ class_name PlatformerController2D
 
 @export_category("Slashing")
 
+@export var slashAttack: bool = false ## Allows your player to slash, damaging enemies.
 @export var slashCooldown: float = 1.0 ## Cooldown between each slash. Set to 0 and the player can slash constantly as fast as they press the button.
 @export var slashTime: float = 0.5 ## The time each slash takes.
 var isSlashReady: bool = true ## Check for whether the cooldown of the previous attack has ended (allowing for the next)
@@ -101,6 +102,9 @@ var isSlashReady: bool = true ## Check for whether the cooldown of the previous 
 ## 3. DASHING
 
 @export_category("Dashing")
+
+## Can the player dash?
+@export var canDash: bool = true
 
 ## The type of dashes the player can do.
 @export_enum("None", "Horizontal", "Vertical", "Four Way", "Eight Way") var dashType: int
@@ -406,7 +410,8 @@ func _process(_delta):
 	_handleDashProgressBar()
 		
 func _handleDashProgressBar():
-	if dashCount > 0:
+
+	if dashCount > 0 and canDash:
 		DashProgress.value = currentCharge/dashChargeTime * 100
 		DashProgress.visible = true
 	else:
@@ -521,6 +526,7 @@ func _physics_process(delta):
 			velocity.x = 0
 			
 	#INFO Crouching
+	
 	if crouch:
 		if downHold and is_on_floor():
 			crouching = true
@@ -636,7 +642,7 @@ func _physics_process(delta):
 				else:
 					_jump()
 					
-	#INFO dashing
+	#INFO Dashing
 	_handleDash()
 	
 	#INFO Corner Cutting
@@ -667,7 +673,7 @@ func _fallOneWay():
 ## if: release dash button, and gauge is not 100%, slash. 
 ## enable slash hitbox and play slash animation
 func _slashAttack():
-	if isSlashReady and dashTap and currentCharge < dashChargeTime and !slide:
+	if slashAttack and isSlashReady and dashTap and currentCharge < dashChargeTime and !slide:
 		SlashAttack._activateSlash()
 		await get_tree().create_timer(slashTime).timeout
 		## then, cooldown slash
@@ -696,6 +702,8 @@ func _chargeGracePeriod():
 		dashChargeGracePeriod = 0.1
 	
 func _handleDash():
+	
+	if !canDash: return
 	
 	_chargeDash()
 	_slashAttack()
