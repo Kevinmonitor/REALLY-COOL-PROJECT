@@ -239,6 +239,8 @@ var rollTap
 var downTap
 var twirlTap
 
+var resetTap
+
 var isCharging
 var isReleaseCharge
 
@@ -248,7 +250,7 @@ var damageBuffer: float = 0
 # These are functions specific to my own game - but you can reference the code here if you want.
 # It is rather specifically tailored to a certain system, and will likely not make 100% sense, but it's there.
 
-#var reset_position: Vector2
+var reset_position: Vector2
 ## Indicates that the player has an event happening and can't be controlled.
 #var event: bool
 #
@@ -278,7 +280,16 @@ var damageBuffer: float = 0
 	## Position for kill system. Assigned when entering new room.
 	#reset_position = position
 	
+# Reset position. Debug purposes
+
+func _reset_position():
+	if resetTap:
+		global_position = reset_position
+	
 func _ready():
+	
+	# Feel free to remove this line if you're not debugging
+	reset_position = global_position
 	
 	wasMovingR = true
 	anim = PlayerSprite
@@ -382,7 +393,7 @@ func _process(_delta):
 			anim.play("dash")
 		
 		else:
-	
+#	
 			#jump
 			if velocity.y < 0 and jump and !dashing:
 				anim.speed_scale = 1
@@ -449,7 +460,10 @@ func _physics_process(delta):
 	isCharging = Input.is_action_pressed("dash")
 	isReleaseCharge = Input.is_action_just_released("dash")
 	
+	resetTap = Input.is_action_just_released("reset")
+	
 	_fallOneWay()
+	_reset_position()
 	move_and_slide()
 		
 	#INFO Left and Right Movement
