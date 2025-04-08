@@ -1,0 +1,117 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0ourv3jijdx"]
+
+[ext_resource type="Texture2D" uid="uid://tdldv725edlc" path="res://asset_bundle/AssetBundle/Sprites/ForestBackground.png" id="1_iemv2"]
+[ext_resource type="Script" uid="uid://cwl66xy7liy46" path="res://scence/gamemanager.gd" id="1_xhmcv"]
+[ext_resource type="PackedScene" uid="uid://fei0lajm6qpm" path="res://characters/playerfox.tscn" id="2_tqpm0"]
+[ext_resource type="PackedScene" uid="uid://cb0nhujjf4q8u" path="res://characters/slim.tscn" id="3_nkw88"]
+[ext_resource type="FontFile" uid="uid://bq82kaiyg43bd" path="res://asset_bundle/AssetBundle/Uranus_Pixel_11Px.ttf" id="5_vqmr0"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tqpm0"]
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("spawn_timer", "score_label", "game_over_label")]
+y_sort_enabled = true
+script = ExtResource("1_xhmcv")
+slim_scene = ExtResource("3_nkw88")
+spawn_timer = NodePath("Timer")
+score_label = NodePath("CanvasLayer/Label")
+game_over_label = NodePath("CanvasLayer/game over lab")
+
+[node name="bg1" type="Sprite2D" parent="."]
+position = Vector2(-120, 0)
+texture = ExtResource("1_iemv2")
+metadata/_edit_lock_ = true
+
+[node name="bg2" type="Sprite2D" parent="."]
+position = Vector2(119, 0)
+texture = ExtResource("1_iemv2")
+metadata/_edit_lock_ = true
+
+[node name="player" parent="." instance=ExtResource("2_tqpm0")]
+position = Vector2(-142, 70)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.43, 2.43)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 119)
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, -78)
+rotation = -3.14159
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(237, -78)
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-236, -78)
+rotation = -4.71239
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 24.0
+offset_top = 17.0
+offset_right = 85.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("5_vqmr0")
+theme_override_font_sizes/font_size = 48
+text = "Score: 0"
+
+[node name="game over lab" type="Label" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.5
+offset_top = -24.5
+offset_right = 114.5
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0.360624, 0.38521, 0.209591, 1)
+theme_override_constants/outline_size = 60
+theme_override_fonts/font = ExtResource("5_vqmr0")
+theme_override_font_sizes/font_size = 120
+text = "Game Over!"
+
+[node name="game over lab2" type="Label" parent="CanvasLayer/game over lab"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -122.0
+offset_top = 94.0
+offset_right = 122.0
+offset_bottom = 94.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0.360624, 0.38521, 0.209591, 1)
+theme_override_constants/outline_size = 40
+theme_override_fonts/font = ExtResource("5_vqmr0")
+theme_override_font_sizes/font_size = 48
+text = "Jinglan Chen"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="timeout" from="Timer" to="." method="spawn_slim"]

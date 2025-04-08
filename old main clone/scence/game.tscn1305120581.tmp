@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0ourv3jijdx"]
+
+[ext_resource type="Texture2D" uid="uid://tdldv725edlc" path="res://asset_bundle/AssetBundle/Sprites/ForestBackground.png" id="1_iemv2"]
+[ext_resource type="PackedScene" uid="uid://fei0lajm6qpm" path="res://characters/playerfox.tscn" id="2_tqpm0"]
+[ext_resource type="PackedScene" uid="uid://cb0nhujjf4q8u" path="res://characters/slim.tscn" id="3_nkw88"]
+[ext_resource type="PackedScene" uid="uid://d3i5cee786w5t" path="res://scence/bullet.tscn" id="4_xhmcv"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tqpm0"]
+
+[node name="Node2D" type="Node2D"]
+y_sort_enabled = true
+
+[node name="bg1" type="Sprite2D" parent="."]
+position = Vector2(-120, 0)
+texture = ExtResource("1_iemv2")
+metadata/_edit_lock_ = true
+
+[node name="bg2" type="Sprite2D" parent="."]
+position = Vector2(119, 0)
+texture = ExtResource("1_iemv2")
+metadata/_edit_lock_ = true
+
+[node name="player" parent="." instance=ExtResource("2_tqpm0")]
+position = Vector2(-142, 70)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.43, 2.43)
+
+[node name="Area2D" parent="." instance=ExtResource("3_nkw88")]
+position = Vector2(-10, 61)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 119)
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, -78)
+rotation = -3.14159
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(237, -78)
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-236, -78)
+rotation = -4.71239
+shape = SubResource("WorldBoundaryShape2D_tqpm0")
+metadata/_edit_lock_ = true
+
+[node name="bullet" parent="." instance=ExtResource("4_xhmcv")]
+visible = false
