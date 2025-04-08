@@ -1,0 +1,23 @@
+extends Node2D
+
+@export var slim_scene : PackedScene
+@export var spawn_timer : Timer
+@export var score : int = 0
+@export var score_label : Label
+@export var game_over_label : Label
+
+func _process(delta: float) -> void:
+	spawn_timer.wait_time -= 0.2 * delta
+	spawn_timer.wait_time = clamp(spawn_timer.wait_time,1,3)
+	
+	score_label.text = "Score: " + str(score)
+	pass
+
+func spawn_slim() -> void:
+	var slim_node = slim_scene.instantiate()
+	slim_node.position = Vector2(260,randf_range(50,100))
+	get_tree().current_scene.add_child(slim_node)
+	pass # Replace with function body.
+
+func show_game_over():
+	game_over_label.visible = true
