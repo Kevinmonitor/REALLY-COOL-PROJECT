@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqgskqx83cldj"]
+
+[ext_resource type="PackedScene" uid="uid://bdpl7qde5uu02" path="res://models/cwag_fixed_export/cwag_fixed.glb" id="1_a202f"]
+[ext_resource type="Script" uid="uid://csu5enag531lo" path="res://character_body_3d.gd" id="2_noarx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_noarx"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_a0tk4"]
+sky_material = SubResource("ProceduralSkyMaterial_noarx")
+
+[sub_resource type="Environment" id="Environment_r3fl7"]
+background_mode = 2
+sky = SubResource("Sky_a0tk4")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jka67"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i5arm"]
+
+[node name="main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_r3fl7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.815356, -0.520123, 0.254296, 0.365575, -0.121932, 0.922761, -0.448942, 0.845343, 0.289563, 0, 12.947, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(30.1378, 0, 0, 0, 0.153703, 0, 0, 0, 30.1378, -0.0137059, 0.0413415, 0.0097502)
+use_collision = true
+
+[node name="cwag_fixed" parent="." instance=ExtResource("1_a202f")]
+transform = Transform3D(0.26, 0, 0, 0, 0.24, 0, 0, 0, 0.28, -0.14675, 0.120491, 0.156494)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0213337, 0.167438, -0.00186634)
+script = ExtResource("2_noarx")
+
+[node name="Mesh" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(1.00115, 0, 0, 0, 1.00115, 0, 0, 0, 1.00115, 0, 1.21393, -1.7559)
+mesh = SubResource("CapsuleMesh_jka67")
+skeleton = NodePath("../../root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/main")
+
+[node name="Collider" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19589, -1.7609)
+shape = SubResource("CapsuleShape3D_i5arm")
+
+[node name="Head" type="Node3D" parent="CharacterBody3D"]
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.171603, 1.90825, -1.51677)
