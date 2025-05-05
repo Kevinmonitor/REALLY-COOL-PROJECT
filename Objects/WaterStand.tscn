@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckh38f7m3rrw4"]
+
+[ext_resource type="PackedScene" uid="uid://cdkiq2e5i4530" path="res://Objects/DashRefill.tscn" id="1_j27vn"]
+[ext_resource type="Script" uid="uid://bdadt6fct0ask" path="res://Objects/WaterStand.gd" id="2_22cqp"]
+
+[node name="WaterStand" instance=ExtResource("1_j27vn")]
+script = ExtResource("2_22cqp")
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+self_modulate = Color(0.881868, 0.47676, 0.127577, 1)
+
+[node name="CollisionShape2D" parent="." index="1"]
+visible = false
+
+[node name="RichTextLabel" parent="." index="2"]
+visible = false
