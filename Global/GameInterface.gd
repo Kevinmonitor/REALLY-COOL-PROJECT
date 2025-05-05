@@ -11,10 +11,11 @@ func _ready() -> void:
 	pass
 
 func _updateHPBar(health: int):
+	for child in Lifebar.get_children():
+		child.free()
 	for i in range(health):
 		var heart = HeartTexture.instantiate()
-		add_child(heart)
-		
+		Lifebar.add_child(heart)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

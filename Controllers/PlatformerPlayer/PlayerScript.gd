@@ -212,6 +212,11 @@ var isReleaseCharge
 
 var damageBuffer: float = 0
 
+# water mechanic prototype
+
+var currentWaterCharge: float = 0.0
+var waterChargeTime: float = 3.0
+
 # bonus stuff
 
 var reset_position: Vector2
@@ -234,7 +239,22 @@ func _startDamageBuffer():
 	damageBuffer = 1
 	await get_tree().create_timer(0.25).timeout
 	damageBuffer = 0
-	
+
+func _checkWater():
+	currentWaterCharge = clamp(currentWaterCharge - 1.0/60.0, 0.0, waterChargeTime*1.01)
+	if currentWaterCharge > 0.0:
+		set_collision_mask_value(8, true)
+	else:
+		set_collision_mask_value(8, false);
+		
+#func _checkWaterBuff():
+	#
+	#if waterUpgrade and standingOnWater:
+		#waterTile.collision = true
+	#else:
+		#waterTile.collision = false
+	#pass
+	#
 func _ready():
 	
 	wasMovingR = true
@@ -428,6 +448,7 @@ func _physics_process(delta):
 	isCharging = Input.is_action_pressed("dash")
 	isReleaseCharge = Input.is_action_just_released("dash")
 	
+	_checkWater()
 	_fallOneWay()
 	move_and_slide()
 		

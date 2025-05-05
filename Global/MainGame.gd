@@ -20,8 +20,6 @@ var playerCurrentHP: int = playerMaxHP
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
-	playerCurrentHP = 50
-	print(playerCurrentHP)
 	init_player()
 	get_script().set_meta(&"singleton", self)
 	
@@ -164,3 +162,6 @@ func _process(delta: float) -> void:
 func _refillDash():
 	playerPath.currentCharge = playerPath.dashChargeTime * 2.0
 	playerPath.dashCount = 1
+	
+func _refillWater():
+	playerPath.currentWaterCharge = playerPath.waterChargeTime
