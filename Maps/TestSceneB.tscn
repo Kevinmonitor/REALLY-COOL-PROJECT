@@ -61,6 +61,3 @@ position = Vector2(528, 192)
 [node name="WaterStand" parent="." instance=ExtResource("7_1qdh2")]
 z_index = 5
 position = Vector2(1141, 288)
-
-[connection signal="body_entered" from="MainPlatforms/Spike" to="MainPlatforms/Spike" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@28453" to="MainPlatforms/@Area2D@28453" method="_on_body_entered"]
