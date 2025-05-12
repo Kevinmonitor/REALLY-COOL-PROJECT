@@ -62,7 +62,7 @@ position = Vector2(1753, 234)
 position = Vector2(875, 130)
 
 [connection signal="body_entered" from="MainPlatforms/Spike" to="MainPlatforms/Spike" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@50408" to="MainPlatforms/@Area2D@50408" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@50409" to="MainPlatforms/@Area2D@50409" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@50410" to="MainPlatforms/@Area2D@50410" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@50411" to="MainPlatforms/@Area2D@50411" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@22033" to="MainPlatforms/@Area2D@22033" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@22034" to="MainPlatforms/@Area2D@22034" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@22035" to="MainPlatforms/@Area2D@22035" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@22036" to="MainPlatforms/@Area2D@22036" method="_on_body_entered"]
