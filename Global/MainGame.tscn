@@ -8,7 +8,7 @@
 [node name="MainGame" type="Node2D" node_paths=PackedStringArray("playerPath", "interface")]
 script = ExtResource("1_11x6e")
 playerPath = NodePath("PlayerController")
-startMap = "res://Maps/NewRoom.tscn"
+startMap = "res://Maps/JinglanSimpleLV2.tscn"
 interface = NodePath("UI")
 
 [node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("GameScript", "Lifebar", "Kobiko")]

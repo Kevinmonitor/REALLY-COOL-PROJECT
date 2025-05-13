@@ -52,6 +52,7 @@ func _ready() -> void:
 	# Load the starting room.
 	load_room(startMap)
 	
+	playerPath.global_position = Vector2(25, 650)
 	add_module("RoomTransitions.gd")
 
 # Returns this node from anywhere.
