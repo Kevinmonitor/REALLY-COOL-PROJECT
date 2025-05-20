@@ -13,6 +13,11 @@ const SAVE_PATH = "user://save_data.sav"
 var playerDamage: float = 2.0
 var playerMaxHP: int = 3
 var playerCurrentHP: int = playerMaxHP
+var playerMaxAir: float = 3.0
+var playerCurrentAir: float = playerMaxAir
+
+var playerIsSwimming: bool = false
+var playerDrownDelay: float = 1.0 # after running out of air the player starts losing HP every second
 
 # upgrade variables
 

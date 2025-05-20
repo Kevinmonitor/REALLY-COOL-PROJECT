@@ -224,8 +224,8 @@ dashSpeed = 750.0
 timeToReachMaxSpeed = 0.1
 timeToReachZeroSpeed = 0.1
 jumpHeight = 1.8
-gravityScale = 25.0
-terminalVelocity = 600.0
+gravityScale = 30.0
+terminalVelocity = 850.0
 descendingGravityFactor = 1.25
 wallJump = true
 wallKickAngle = 45.0
@@ -262,7 +262,6 @@ frame = 3
 frame_progress = 1.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-visible = false
 offset_left = -65.0
 offset_top = -77.0
 offset_right = 137.0

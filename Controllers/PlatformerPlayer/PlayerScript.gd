@@ -216,6 +216,8 @@ var damageBuffer: float = 0
 
 var currentWaterCharge: float = 0.0
 var waterChargeTime: float = 3.0
+var airTime: float = 3.0
+var underwater: bool = false
 
 # bonus stuff
 
@@ -231,13 +233,14 @@ func _owFuck():
 		MainGame.get_singleton().updateHP(-1)
 		print(MainGame.get_singleton().playerCurrentHP)
 		_startDamageBuffer()
-		if MainGame.get_singleton().playerCurrentHP > 0:
+		if MainGame.get_singleton().playerCurrentHP <= 0:
 			position = reset_position
+			MainGame.get_singleton().updateHP(3)
 			MainGame.get_singleton().load_room(MetSys.get_current_room_name())
 
 func _startDamageBuffer():
-	damageBuffer = 1
-	await get_tree().create_timer(0.25).timeout
+	damageBuffer = 999
+	await get_tree().create_timer(2.0).timeout
 	damageBuffer = 0
 
 func _checkWater():
@@ -246,6 +249,25 @@ func _checkWater():
 		set_collision_mask_value(8, true)
 	else:
 		set_collision_mask_value(8, false);
+		
+func _checkUnderwater():
+	if underwater:
+		airTime -= 0.025
+		if airTime <= 0:
+			_owFuck()
+		gravityScale = 50.0
+		if downHold:
+			terminalVelocity = 250.0
+		else:
+			terminalVelocity = 150.0
+		jumpHeight = 0.3
+		jumps = 9999
+	else:
+		airTime = clamp(airTime+1.0, 0.0, 8.0);
+		gravityScale = 30.0
+		terminalVelocity = 700.0
+		jumpHeight = 1.8
+		jumps = 1
 		
 #func _checkWaterBuff():
 	#
@@ -328,7 +350,7 @@ func _updateData():
 
 func _process(_delta):
 	
-	Text.text = "slashready: " + str(isSlashReady) + "\ndashing: " + str(dashing)
+	Text.text = "air: " + str(airTime) + "\ndashing: " + str(dashing)
 	
 	#INFO animations
 	#directions
@@ -449,6 +471,7 @@ func _physics_process(delta):
 	isReleaseCharge = Input.is_action_just_released("dash")
 	
 	_checkWater()
+	_checkUnderwater()
 	_fallOneWay()
 	move_and_slide()
 		
@@ -761,14 +784,14 @@ func _wallJump():
 	print("walljump")
 	var horizontalWallKick = abs(jumpMagnitude * cos(wallKickAngle * (PI / 180)))
 	var verticalWallKick = abs(jumpMagnitude * sin(wallKickAngle * (PI / 180)))
-	velocity.y = -verticalWallKick * 1.4
+	velocity.y = -verticalWallKick * 1.4 * (0.6 if underwater else 1.0)
 	var dir = 1
 	if wallLatchingModifer and latchHold:
 		dir = -1
 	if wasMovingR:
-		velocity.x = -horizontalWallKick  * dir * 1.8
+		velocity.x = -horizontalWallKick  * dir * 1.8 * (0.6 if underwater else 1.0)
 	else:
-		velocity.x = horizontalWallKick * dir * 1.8
+		velocity.x = horizontalWallKick * dir * 1.8 * (0.6 if underwater else 1.0)
 	if inputPauseAfterWallJump != 0:
 		movementInputMonitoring = Vector2(false, false)
 		_inputPauseReset(inputPauseAfterWallJump)
@@ -778,15 +801,15 @@ func _superWallJump():
 	var verticalWallKick = abs(jumpMagnitude * sin(wallKickAngle * (PI / 180)))
 	decelerationDuration = 0.4
 	
-	velocity.y = -verticalWallKick * 2.0
+	velocity.y = -verticalWallKick * 2.0 * (0.6 if underwater else 1.0)
 	
 	var dir = 1
 	if wallLatchingModifer and latchHold:
 		dir = -1
 	if wasMovingR:
-		velocity.x = -horizontalWallKick * dir * 1.25
+		velocity.x = -horizontalWallKick * dir * 1.25 * (0.6 if underwater else 1.0)
 	else:
-		velocity.x = horizontalWallKick * dir * 1.25
+		velocity.x = horizontalWallKick * dir * 1.25 * (0.6 if underwater else 1.0)
 	if inputPauseAfterWallJump != 0:
 		movementInputMonitoring = Vector2(false, false)
 		_inputPauseReset(inputPauseAfterWallJump)
