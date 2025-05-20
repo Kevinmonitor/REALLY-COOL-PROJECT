@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b18qrcpn2dt2n"]
+[gd_scene load_steps=7 format=3 uid="uid://b18qrcpn2dt2n"]
 
 [ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="1_x6lt7"]
 [ext_resource type="TileSet" uid="uid://byhcuhh15j5d2" path="res://Textures/Decor01/TilesetCyberpunk.tres" id="2_15olg"]
 [ext_resource type="TileSet" uid="uid://tfbbad1h7ycg" path="res://Tilemaps/TilesetLabWalls.tres" id="3_hbmod"]
 [ext_resource type="TileSet" uid="uid://cpc38fgih7wx4" path="res://Tilemaps/Tileset01.tres" id="4_n6clb"]
+[ext_resource type="TileSet" uid="uid://inylp43cfhjm" path="res://Tilemaps/TilesetWater.tres" id="5_deds3"]
+[ext_resource type="Script" uid="uid://cveemu6ng5ic5" path="res://Maps/WaterHandling.gd" id="6_s3w58"]
 
 [node name="Map" type="Node2D"]
 
@@ -37,3 +39,10 @@ tile_set = ExtResource("4_n6clb")
 visibility_layer = 2
 z_index = 2
 tile_set = ExtResource("4_n6clb")
+
+[node name="Water" type="TileMapLayer" parent="."]
+self_modulate = Color(1, 1, 1, 0.721569)
+visibility_layer = 2
+z_index = 7
+tile_set = ExtResource("5_deds3")
+script = ExtResource("6_s3w58")
