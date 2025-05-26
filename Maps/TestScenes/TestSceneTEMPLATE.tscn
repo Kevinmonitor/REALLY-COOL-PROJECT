@@ -41,6 +41,7 @@ z_index = 2
 tile_set = ExtResource("4_n6clb")
 
 [node name="Water" type="TileMapLayer" parent="."]
+modulate = Color(0.737255, 0.952941, 0.670588, 1)
 self_modulate = Color(1, 1, 1, 0.721569)
 visibility_layer = 2
 z_index = 7
