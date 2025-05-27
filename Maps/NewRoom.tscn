@@ -67,11 +67,11 @@ position = Vector2(1753, 234)
 position = Vector2(875, 130)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 214.0
-offset_top = 106.0
-offset_right = 254.0
-offset_bottom = 146.0
-text = "aaaaaaaaa"
+offset_left = 171.0
+offset_top = 141.0
+offset_right = 329.0
+offset_bottom = 194.0
+text = "Touch this label to active water stand"
 
 [connection signal="body_entered" from="MainPlatforms/@Area2D@63114" to="MainPlatforms/@Area2D@63114" method="_on_body_entered"]
 [connection signal="body_entered" from="MainPlatforms/@Area2D@63115" to="MainPlatforms/@Area2D@63115" method="_on_body_entered"]
