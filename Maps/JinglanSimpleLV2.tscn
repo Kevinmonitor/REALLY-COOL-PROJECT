@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://kiv5bflp0k5n" path="res://Objects/Spike.tscn" id="6_by426"]
 [ext_resource type="PackedScene" uid="uid://bku0bichp3fwh" path="res://Objects/Bitch.tscn" id="8_ocyei"]
 
-[node name="Map" type="Node2D"]
+[node name="Map2" type="Node2D"]
 
 [node name="RoomInstance" parent="." instance=ExtResource("1_6cdks")]
 
