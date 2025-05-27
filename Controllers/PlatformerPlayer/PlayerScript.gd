@@ -18,6 +18,7 @@ class_name PlatformerController2D
 @export var DashProgress: TextureProgressBar
 @export var Text: RichTextLabel
 @export var SlashAttack: Area2D
+@export var WaterCollisionArea: Area2D
 
 #INFO HORIZONTAL MOVEMENT 
 @export_category("L/R Movement")
