@@ -351,7 +351,7 @@ func _updateData():
 
 func _process(_delta):
 	
-	Text.text = "air: " + str(airTime) + "\ndashing: " + str(dashing)
+	Text.text = "air: " + str(airTime) + "\ndashing: " + str(dashing) + "\nmovement:" + str(rightHold)
 	
 	#INFO animations
 	#directions
@@ -447,9 +447,11 @@ func _spawnDashImage():
 	ghost.scale.y = anim.scale.y
 		
 func _physics_process(delta):
+	
 	if !dset:
 		gdelta = delta
 		dset = true
+		
 	#INFO Input Detectio. Define your inputs from the project settings here.
 	leftHold = Input.is_action_pressed("left")
 	rightHold = Input.is_action_pressed("right")
@@ -761,7 +763,10 @@ func _bufferJump():
 func _coyoteTime():
 	await get_tree().create_timer(coyoteTime).timeout
 	coyoteActive = false
-	jumpCount += -1
+	if underwater:
+		jumpCount += 999
+	else:
+		jumpCount -= 1
 	
 func _jump():
 	print("jump")
