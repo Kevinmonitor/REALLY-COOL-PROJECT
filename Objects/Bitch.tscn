@@ -1,17 +1,18 @@
-[gd_scene load_steps=28 format=3 uid="uid://bku0bichp3fwh"]
+[gd_scene load_steps=34 format=3 uid="uid://bku0bichp3fwh"]
 
-[ext_resource type="Texture2D" uid="uid://cbled50hkqbmm" path="res://addons/kenney pixel platformer/characters/character_0024.png" id="1_kriid"]
 [ext_resource type="Script" uid="uid://b2e4vtfx7poo" path="res://Objects/Bitch.gd" id="1_uw8k5"]
 [ext_resource type="Shader" uid="uid://cnnlclc6xurv2" path="res://Objects/Bitch.gdshader" id="2_x2rdu"]
-[ext_resource type="Texture2D" uid="uid://cxhf8yvwugi4a" path="res://addons/kenney pixel platformer/characters/character_0025.png" id="2_xagwq"]
 [ext_resource type="Texture2D" uid="uid://cow76n8thcead" path="res://Textures/Effects/enemyBoom.png" id="3_t58j0"]
-[ext_resource type="Texture2D" uid="uid://de2pyfwmw4j37" path="res://addons/kenney pixel platformer/characters/character_0026.png" id="3_w6iol"]
+[ext_resource type="Texture2D" uid="uid://dp5ifpte1hoq8" path="res://Textures/enemySheet.png" id="4_jo6no"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ov2mc"]
 size = Vector2(13, 13)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_45fik"]
 size = Vector2(30, 30)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ce24a"]
+radius = 36.0139
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d6bnv"]
 shader = ExtResource("2_x2rdu")
@@ -70,6 +71,34 @@ region = Rect2(1661, 0, 151, 213)
 atlas = ExtResource("3_t58j0")
 region = Rect2(1812, 0, 151, 213)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jo6no"]
+atlas = ExtResource("4_jo6no")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yorrw"]
+atlas = ExtResource("4_jo6no")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ce24a"]
+atlas = ExtResource("4_jo6no")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sek5"]
+atlas = ExtResource("4_jo6no")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1uxf"]
+atlas = ExtResource("4_jo6no")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnm76"]
+atlas = ExtResource("4_jo6no")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1k1sp"]
+atlas = ExtResource("4_jo6no")
+region = Rect2(64, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ljhyw"]
 animations = [{
 "frames": [{
@@ -113,29 +142,53 @@ animations = [{
 "texture": SubResource("AtlasTexture_hftc1")
 }],
 "loop": false,
-"name": &"bitchKillYourself",
+"name": &"bitchExplode",
 "speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_kriid")
+"texture": SubResource("AtlasTexture_jo6no")
+}],
+"loop": true,
+"name": &"bitchHurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yorrw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_xagwq")
+"texture": SubResource("AtlasTexture_ce24a")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_w6iol")
+"texture": SubResource("AtlasTexture_1sek5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_xagwq")
+"texture": SubResource("AtlasTexture_ce24a")
 }],
 "loop": true,
 "name": &"bitchMove",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1uxf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnm76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1k1sp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnm76")
+}],
+"loop": true,
+"name": &"bitchMoveAngry",
+"speed": 10.0
 }]
 
 [sub_resource type="Animation" id="Animation_e117s"]
-length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -176,13 +229,14 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ubygi"]
 size = Vector2(13, 13)
 
-[node name="Bitch" type="CharacterBody2D" node_paths=PackedStringArray("enemyHitbox", "enemyHurtbox", "animator", "shaderAnimator")]
+[node name="Bitch" type="CharacterBody2D" node_paths=PackedStringArray("enemyHitbox", "enemyHurtbox", "enemyDetection", "animator", "shaderAnimator")]
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_uw8k5")
 moveSpeed = 2400
 enemyHitbox = NodePath("HitboxArea")
 enemyHurtbox = NodePath("HurtboxArea")
+enemyDetection = NodePath("Detection")
 animator = NodePath("AnimatedSprite2D")
 shaderAnimator = NodePath("AnimatedSprite2D/AnimationPlayer")
 enemyHP = 5.0
@@ -205,10 +259,19 @@ position = Vector2(-3, -3)
 shape = SubResource("RectangleShape2D_45fik")
 debug_color = Color(0.700446, 0, 0.234195, 0.42)
 
+[node name="Detection" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="DetectionBox" type="CollisionShape2D" parent="Detection"]
+shape = SubResource("CircleShape2D_ce24a")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_d6bnv")
 sprite_frames = SubResource("SpriteFrames_ljhyw")
-animation = &"bitchMove"
+animation = &"bitchMoveAngry"
+autoplay = "bitchMove"
+frame_progress = 0.056299
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite2D"]
 libraries = {
@@ -221,3 +284,4 @@ disabled = true
 
 [connection signal="body_entered" from="HurtboxArea" to="." method="_on_hurtbox_area_body_entered"]
 [connection signal="area_entered" from="HitboxArea" to="." method="_on_hitbox_area_area_entered"]
+[connection signal="body_entered" from="Detection" to="." method="_on_detection_body_entered"]
