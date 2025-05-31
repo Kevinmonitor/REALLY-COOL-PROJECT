@@ -69,6 +69,7 @@ class_name PlatformerController2D
 @export_range(0, 90) var wallKickAngle: float = 60.0
 ##The player's gravity will be divided by this number when touch a wall and descending. Set to 1 by default meaning no change will be made to the gravity and there is effectively no wall sliding. THIS IS OVERRIDDED BY WALL LATCH.
 @export_range(1, 20) var wallSliding: float = 1.0
+
 ##If enabled, the player's gravity will be set to 0 when touching a wall and descending. THIS WILL OVERRIDE WALLSLIDING.
 @export var wallLatching: bool = false
 ##wall latching must be enabled for this to work. #If enabled, the player must hold down the "latch" key to wall latch. Assign "latch" in the project input settings. The player's input will be ignored when latching.
@@ -378,10 +379,11 @@ func _updateData():
 
 
 
+
 func _process(_delta):
 	
 	_damageFlashHandling()
-	#Text.text = "air: " + str(airTime) + "\ndashing: " + str(dashing) + "\nmovement:" + str(rightHold)
+	Text.text =  "\nmovement:" + str(rightHold)
 	
 	#INFO animations
 	#directions
@@ -628,15 +630,11 @@ func _physics_process(delta):
 			
 		elif wallSliding != 1 and velocity.y > 0:
 			appliedGravity = appliedGravity / wallSliding
-			
-	elif !WallRaycast.is_colliding() and !groundPounding:
-		
-		slide = false
-		appliedTerminalVelocity = terminalVelocity
-		
+	
 	else:
 		
 		slide = false
+		appliedTerminalVelocity = terminalVelocity
 	
 	if gravityActive:
 		if velocity.y < appliedTerminalVelocity:
@@ -667,15 +665,15 @@ func _physics_process(delta):
 		elif jumpTap and WallRaycast.is_colliding and !is_on_floor():
 			
 			if !dashing:
-				if wallJump and !latched:
-					_wallJump()
-				elif wallJump and latched:
-					_wallJump()
+				if wallJump and slide:
+					_wallJump(1.0)
+				elif wallJump and !slide:
+					_wallJump(0.5)
 			else:
 				if wallJump and !latched:
-					_superWallJump()
+					_superWallJump(1.0)
 				elif wallJump and latched:
-					_superWallJump()
+					_superWallJump(0.5)
 				
 		elif jumpTap and is_on_floor():
 			if dashing:
@@ -691,10 +689,13 @@ func _physics_process(delta):
 					_superJump()
 				else:
 					_jump()
-					
+
+			
 	#INFO dashing
 	_handleDash()
-	
+
+
+
 	#INFO Corner Cutting
 	if cornerCutting:
 		if velocity.y < 0 and leftRaycast.is_colliding() and !rightRaycast.is_colliding() and !middleRaycast.is_colliding():
@@ -723,8 +724,11 @@ func _fallOneWay():
 # if: release dash button, and gauge is not 100%, slash. 
 # enable slash hitbox and play slash animation
 func _slashAttack():
+	
 	if isSlashReady and dashTap and currentCharge < dashChargeTime and !slide:
+		
 		SlashAttack._activateSlash()
+		
 		await get_tree().create_timer(slashTime).timeout
 		# then, cooldown slash
 		_slashCooldown()
@@ -763,6 +767,8 @@ func _handleDash():
 	# if you release dash when at 100% OR you press dash at 100%
 	if eightWayDash and dashCount > 0 and !rolling and ( (isReleaseCharge and currentCharge >= dashChargeTime) or (dashTap and currentCharge >= dashChargeTime) ):
 		
+		SlashAttack._activateSlash()
+		
 		var input_direction = Input.get_vector("left", "right", "up", "down")
 		var dTime = 0.0625 * dashLength
 		velocity.x = 0
@@ -788,6 +794,21 @@ func _handleDash():
 		velocity.x = 0
 	if dashing and velocity.x < 0 and rightTap and dashCancel:
 		velocity.x = 0
+	
+func _dashingTime(time):
+	
+	damageBuffer = 999
+	dashing = true
+	decelerationDuration = 0.1
+	maxSpeed = dashSpeed
+	await get_tree().create_timer(time).timeout
+	_decelerateMaxSpeed(dashSpeed, normalMaxSpeed, decelerationDuration)
+	damageBuffer = 0
+	dashing = false
+
+	
+	
+
 	
 func _bufferJump():
 	await get_tree().create_timer(jumpBuffering).timeout
@@ -819,7 +840,8 @@ func _superJump():
 		jumpCount += -1
 		jumpWasPressed = false	
 		
-func _wallJump():
+func _wallJump(kickStrength):
+	
 	print("walljump")
 	var horizontalWallKick = abs(jumpMagnitude * cos(wallKickAngle * (PI / 180)))
 	var verticalWallKick = abs(jumpMagnitude * sin(wallKickAngle * (PI / 180)))
@@ -827,15 +849,16 @@ func _wallJump():
 	var dir = 1
 	if wallLatchingModifer and latchHold:
 		dir = -1
-	if wasMovingR:
-		velocity.x = -horizontalWallKick  * dir * 1.8 * (0.6 if underwater else 1.0)
+	if wasMovingR: 
+		velocity.x = -horizontalWallKick  * dir * 1.8 * (0.6 if underwater else 1.0) * kickStrength
 	else:
-		velocity.x = horizontalWallKick * dir * 1.8 * (0.6 if underwater else 1.0)
+		velocity.x = horizontalWallKick * dir * 1.8 * (0.6 if underwater else 1.0) * kickStrength
 	if inputPauseAfterWallJump != 0:
 		movementInputMonitoring = Vector2(false, false)
 		_inputPauseReset(inputPauseAfterWallJump)
 		
-func _superWallJump():
+func _superWallJump(kickStrength):
+	
 	var horizontalWallKick = abs(jumpMagnitude * cos(wallKickAngle * (PI / 180)))
 	var verticalWallKick = abs(jumpMagnitude * sin(wallKickAngle * (PI / 180)))
 	decelerationDuration = 0.4
@@ -846,12 +869,16 @@ func _superWallJump():
 	if wallLatchingModifer and latchHold:
 		dir = -1
 	if wasMovingR:
-		velocity.x = -horizontalWallKick * dir * 1.25 * (0.6 if underwater else 1.0)
+		velocity.x = -horizontalWallKick * dir * 1.25 * (0.6 if underwater else 1.0) * kickStrength
 	else:
-		velocity.x = horizontalWallKick * dir * 1.25 * (0.6 if underwater else 1.0)
+		velocity.x = horizontalWallKick * dir * 1.25 * (0.6 if underwater else 1.0) * kickStrength
 	if inputPauseAfterWallJump != 0:
 		movementInputMonitoring = Vector2(false, false)
 		_inputPauseReset(inputPauseAfterWallJump)
+
+
+
+
 			
 func _setLatch(delay, setBool):
 	await get_tree().create_timer(delay).timeout
@@ -874,14 +901,6 @@ func _pauseGravity(time):
 	gravityActive = false
 	await get_tree().create_timer(time).timeout
 	gravityActive = true
-
-func _dashingTime(time):
-	dashing = true
-	decelerationDuration = 0.1
-	maxSpeed = dashSpeed
-	await get_tree().create_timer(time).timeout
-	_decelerateMaxSpeed(dashSpeed, normalMaxSpeed, decelerationDuration)
-	dashing = false
 
 func _setMaxSpeed(speed):
 	maxSpeed = speed
@@ -913,6 +932,11 @@ func _endGroundPound():
 
 func _placeHolder():
 	print("")
+
+
+
+
+
 
 # die! suffer! explode!
 

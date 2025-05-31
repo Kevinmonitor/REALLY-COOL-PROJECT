@@ -7,7 +7,7 @@
 [ext_resource type="TileSet" uid="uid://inylp43cfhjm" path="res://Tilemaps/TilesetWater.tres" id="5_gg7n2"]
 [ext_resource type="Script" uid="uid://cveemu6ng5ic5" path="res://Maps/WaterHandling.gd" id="6_5w6dh"]
 [ext_resource type="PackedScene" uid="uid://ckh38f7m3rrw4" path="res://Objects/WaterStand.tscn" id="7_lg13h"]
-[ext_resource type="PackedScene" uid="uid://bku0bichp3fwh" path="res://Objects/Bitch.tscn" id="8_6dcmq"]
+[ext_resource type="PackedScene" uid="uid://bku0bichp3fwh" path="res://Objects/Enemy.tscn" id="8_6dcmq"]
 
 [node name="Map" type="Node2D"]
 

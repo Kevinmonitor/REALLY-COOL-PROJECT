@@ -71,6 +71,5 @@ offset_top = -39.0
 offset_right = 29.0
 offset_bottom = 1.0
 theme_override_font_sizes/normal_font_size = 8
-text = "r"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

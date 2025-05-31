@@ -5,7 +5,7 @@
 [ext_resource type="TileSet" uid="uid://byhcuhh15j5d2" path="res://Textures/Decor01/TilesetCyberpunk.tres" id="2_osh43"]
 [ext_resource type="TileSet" uid="uid://tfbbad1h7ycg" path="res://Tilemaps/TilesetLabWalls.tres" id="3_rcm4v"]
 [ext_resource type="TileSet" uid="uid://inylp43cfhjm" path="res://Tilemaps/TilesetWater.tres" id="4_xj82y"]
-[ext_resource type="PackedScene" uid="uid://bku0bichp3fwh" path="res://Objects/Bitch.tscn" id="5_jajjj"]
+[ext_resource type="PackedScene" uid="uid://bku0bichp3fwh" path="res://Objects/Enemy.tscn" id="5_jajjj"]
 [ext_resource type="PackedScene" uid="uid://ckh38f7m3rrw4" path="res://Objects/WaterStand.tscn" id="7_1qdh2"]
 
 [node name="Map" type="Node2D"]

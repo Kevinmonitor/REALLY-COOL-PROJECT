@@ -1,9 +1,9 @@
 [-2,3,0]
--1,0,1,0|ff573c,,,,||
+-1,0,1,0|ff573c,,,,||Game/NewRoom.tscn
 [-1,3,0]
--1,0,-1,0|ff573c,,,,||
+-1,0,-1,0|ff573c,,,,||Game/NewRoom.tscn
 [0,3,0]
-1,0,-1,0|ff573c,,,,||
+1,0,-1,0|ff573c,,,,||Game/NewRoom.tscn
 [1,2,0]
 -1,-1,0,0|ff573c,,,,||Game/JinglanSimpleLV2.tscn
 [2,2,0]
