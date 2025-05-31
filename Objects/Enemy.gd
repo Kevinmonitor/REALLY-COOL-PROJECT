@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 class_name ObjectBitch
 
-@export var moveSpeed = 30
+@export var moveSpeed = 60
 
 @export var enemyHitbox: Area2D
 @export var enemyHurtbox: Area2D
@@ -32,16 +32,18 @@ func _process(delta: float) -> void:
 	
 	_damageFlashHandling()
 	
-	if direction.x == 1:
-		animator.scale.x = -1
-	else:
-		animator.scale.x = 1
+	#if direction.x == 1:
+		#animator.scale.x = -1
+	#else:
+		#animator.scale.x = 1
 	
 	if enemyHP > 0:
-		if !player:
-			animator.play("bitchMove")
+		if isDamaged:
+			animator.play("enemyHurt")
+		elif !player:
+			animator.play("enemyMove")
 		else:
-			animator.play("bitchMoveAngry")
+			animator.play("enemyMoveAngry")
 	
 func _physics_process(delta: float) -> void:
 	direction.y = 0
@@ -50,23 +52,30 @@ func _physics_process(delta: float) -> void:
 	
 func _hitboxHandling():
 	if isDamaged:
-		enemyHitbox.monitoring = false
-		enemyHitbox.monitorable = false
+		enemyHitbox.set_deferred("monitoring", false)
+		enemyHitbox.set_deferred("monitorable", false)
 	else:
 		enemyHitbox.monitoring = true
 		enemyHitbox.monitorable = true
 	pass
 
 func _moveEnemy(delta):
+	
+	if velocity.x > 0:
+		animator.flip_h = true
+	else:
+		animator.flip_h = false
+		
 	if enemyHP > 0:
 		if !player:
-			velocity.x = direction.x * moveSpeed * delta
+			velocity.x = direction.x * moveSpeed * 20 * delta
 		else:
 			_chasePlayer()
+			
 		move_and_slide()
 		
 func _chasePlayer():
-	velocity = position.direction_to(player.position) * (moveSpeed/30)
+	velocity = position.direction_to(player.position) * moveSpeed
 	
 func _on_hurtbox_area_body_entered(body: Node2D) -> void:
 	print("collided")
@@ -77,13 +86,16 @@ func _on_hurtbox_area_body_entered(body: Node2D) -> void:
 		print("collided with player")
 		body._owFuck()
 
-func _bitchFuckingDie():
+func _enemyDie():
 	scale = Vector2(0.8, 0.8)
-	animator.play("bitchExplode")
-	enemyHitbox.monitoring = false
-	enemyHitbox.monitorable = false
-	enemyHurtbox.monitoring = false
-	enemyHurtbox.monitorable = false
+	animator.play("enemyExplode")
+	
+	enemyHitbox.set_deferred("monitoring", false)
+	enemyHitbox.set_deferred("monitorable", false)
+	
+	enemyHurtbox.set_deferred("monitoring", false)
+	enemyHurtbox.set_deferred("monitorable", false)
+	
 	MainGame.get_singleton().updateHP(1)
 	await animator.animation_finished
 	queue_free()
@@ -92,13 +104,13 @@ func _takeDamage():
 	isDamaged = true
 	enemyHP -= MainGame.get_singleton().playerDamage
 	if enemyHP <= 0:
-		_bitchFuckingDie()
+		_enemyDie()
 	await get_tree().create_timer(maxDamageTimer * 1.01).timeout
 	isDamaged = false
 		
 func _damageFlashHandling():
 	if isDamaged && enemyHP > 0:
-		animator.play("bitchHurt")
+		animator.play("enemyHurt")
 		shaderAnimator.play("takeDamage")
 	else:
 		shaderAnimator.stop()
