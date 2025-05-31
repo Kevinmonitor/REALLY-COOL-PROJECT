@@ -11,8 +11,12 @@ class_name PlatformerController2D
 #2. Animations are very primitive. To make full use of your custom art, you may want to slightly change the code for the animations
 
 @export_category("Necessary Child Nodes")
+
 @export var PlayerSprite: AnimatedSprite2D
+@export var shaderAnimator: AnimationPlayer
+
 @export var PlayerCollider: CollisionShape2D
+
 @export var WallRaycast: RayCast2D
 @export var FloorRaycast: RayCast2D
 @export var DashProgress: TextureProgressBar
@@ -223,10 +227,14 @@ var underwater: bool = false
 # bonus stuff
 
 var reset_position: Vector2
+
 # Indicates that the player has an event happening and can't be controlled.
 var event: bool
 
 # hit by spike. player returns to start of room. subtract HP
+
+
+
 func _owFuck():
 	
 	if damageBuffer > 0: pass
@@ -244,6 +252,18 @@ func _startDamageBuffer():
 	await get_tree().create_timer(2.0).timeout
 	damageBuffer = 0
 
+func _damageFlashHandling():
+	if damageBuffer > 0:
+		shaderAnimator.play("takeDamage")
+	else:
+		shaderAnimator.stop()
+		PlayerSprite.material.set_shader_parameter("flash_value", 0.0)
+
+
+
+
+# water
+
 func _checkWater():
 	currentWaterCharge = clamp(currentWaterCharge - 1.0/60.0, 0.0, waterChargeTime*1.01)
 	if currentWaterCharge > 0.0:
@@ -252,6 +272,7 @@ func _checkWater():
 		set_collision_mask_value(8, false);
 		
 func _checkUnderwater():
+	
 	if underwater:
 		airTime -= 0.025
 		if airTime <= 0:
@@ -278,6 +299,11 @@ func _checkUnderwater():
 		#waterTile.collision = false
 	#pass
 	#
+
+
+
+
+
 func _ready():
 	
 	wasMovingR = true
@@ -349,9 +375,13 @@ func _updateData():
 	elif dashType == 4:
 		eightWayDash = true
 
+
+
+
 func _process(_delta):
 	
-	Text.text = "air: " + str(airTime) + "\ndashing: " + str(dashing) + "\nmovement:" + str(rightHold)
+	_damageFlashHandling()
+	#Text.text = "air: " + str(airTime) + "\ndashing: " + str(dashing) + "\nmovement:" + str(rightHold)
 	
 	#INFO animations
 	#directions
@@ -446,6 +476,9 @@ func _spawnDashImage():
 	ghost.scale.x = anim.scale.x
 	ghost.scale.y = anim.scale.y
 		
+
+
+
 func _physics_process(delta):
 	
 	if !dset:

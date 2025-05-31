@@ -11,7 +11,7 @@ const SAVE_PATH = "user://save_data.sav"
 
 # global player variables
 var playerDamage: float = 2.0
-var playerMaxHP: int = 3
+var playerMaxHP: int = 5
 var playerCurrentHP: int = playerMaxHP
 var playerMaxAir: float = 3.0
 var playerCurrentAir: float = playerMaxAir
