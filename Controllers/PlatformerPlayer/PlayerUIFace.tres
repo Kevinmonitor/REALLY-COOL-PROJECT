@@ -1,16 +1,12 @@
-[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://c2hfd7th7vwj2"]
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://c2hfd7th7vwj2"]
 
-[ext_resource type="Texture2D" uid="uid://0vmhhvu44tal" path="res://Textures/Player/kobportrait.png" id="1_gaqsv"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ov24d"]
-atlas = ExtResource("1_gaqsv")
-region = Rect2(0, 0, 32, 32)
+[ext_resource type="Texture2D" uid="uid://ct2rtagtgjlnm" path="res://Textures/Player/kobportrait2.png" id="1_0btxl"]
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ov24d")
+"texture": ExtResource("1_0btxl")
 }],
 "loop": true,
 "name": &"default",

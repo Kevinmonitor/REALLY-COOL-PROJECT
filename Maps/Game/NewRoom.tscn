@@ -92,9 +92,3 @@ offset_bottom = 57.0
 text = "rest in this air room
 to regain air"
 tab_size = 3
-
-[connection signal="body_entered" from="MainPlatforms/Spike" to="MainPlatforms/Spike" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@40743" to="MainPlatforms/@Area2D@40743" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@40744" to="MainPlatforms/@Area2D@40744" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@40745" to="MainPlatforms/@Area2D@40745" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@40746" to="MainPlatforms/@Area2D@40746" method="_on_body_entered"]
