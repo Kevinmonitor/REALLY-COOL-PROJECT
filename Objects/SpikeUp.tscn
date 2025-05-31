@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c17acgfgc4uch"]
+
+[ext_resource type="PackedScene" uid="uid://kiv5bflp0k5n" path="res://Objects/Spike.tscn" id="1_lwfc5"]
+
+[node name="Spike" instance=ExtResource("1_lwfc5")]
+rotation = 3.14159

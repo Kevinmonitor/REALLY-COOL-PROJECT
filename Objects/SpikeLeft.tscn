@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmfods6o2m100"]
+
+[ext_resource type="PackedScene" uid="uid://kiv5bflp0k5n" path="res://Objects/Spike.tscn" id="1_2et61"]
+
+[node name="Spike" instance=ExtResource("1_2et61")]
+rotation = 1.5708
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+rotation = -6.28319
+
+[node name="CollisionShape2D" parent="." index="1"]
+rotation = -6.28319

@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=28 format=3 uid="uid://cpc38fgih7wx4"]
+[gd_resource type="TileSet" load_steps=31 format=3 uid="uid://cpc38fgih7wx4"]
 
 [ext_resource type="Texture2D" uid="uid://bp74bf703r61d" path="res://Textures/Tileset01/1_Industrial_Tileset_1B_16.png" id="1_7wqwx"]
 [ext_resource type="Texture2D" uid="uid://en73pduhpmrn" path="res://Textures/Tileset01/1_Industrial_Tileset_1_16.png" id="2_klb7r"]
@@ -12,6 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://bvv2yvwmplm3f" path="res://Textures/Tileset01/2_Industrial_Props_1_Background_16.png" id="8_6x52t"]
 [ext_resource type="Texture2D" uid="uid://d16idvt8rlgq0" path="res://Textures/Tileset01/1_Industrial_Tileset_2_16.png" id="9_s78e1"]
 [ext_resource type="PackedScene" uid="uid://kiv5bflp0k5n" path="res://Objects/Spike.tscn" id="10_ysvji"]
+[ext_resource type="PackedScene" uid="uid://c17acgfgc4uch" path="res://Objects/SpikeUp.tscn" id="13_hjwaf"]
+[ext_resource type="PackedScene" uid="uid://b0ygat3w04sac" path="res://Objects/SpikeRight.tscn" id="14_k5fbc"]
+[ext_resource type="PackedScene" uid="uid://dmfods6o2m100" path="res://Objects/SpikeLeft.tscn" id="15_wpmbe"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_4kq0k"]
 tile_data = PackedInt32Array(0, 0, 1, 65536, 0, 2, 131072, 0, 3, 1, 65536, 1, 65537, 65536, 2, 131073, 65536, 3, 2, 131072, 1, 65538, 131072, 2, 131074, 131072, 3)
@@ -2304,6 +2307,9 @@ texture = ExtResource("9_s78e1")
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_5o2b0"]
 scenes/1/scene = ExtResource("10_ysvji")
+scenes/2/scene = ExtResource("13_hjwaf")
+scenes/3/scene = ExtResource("14_k5fbc")
+scenes/4/scene = ExtResource("15_wpmbe")
 
 [resource]
 physics_layer_0/collision_layer = 1
