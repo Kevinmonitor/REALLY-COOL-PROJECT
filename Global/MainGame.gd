@@ -85,9 +85,13 @@ func init_room():
 func endMusic():
 	musicAnimationPlayer.play("fadeMusic")
 
+func debugHeal():
+	if Input.is_action_pressed("debug"):
+		updateHP(9)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	debugHeal()
 	
 func fadeToEndScreen():
 	endPlayer.play("end")
