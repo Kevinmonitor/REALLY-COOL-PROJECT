@@ -11,6 +11,7 @@ class_name ObjectBitch
 
 @export var animator: AnimatedSprite2D
 @export var shaderAnimator: AnimationPlayer
+@export var explodeSound: AudioStreamPlayer2D
 
 @export var horizontalMovement: bool = true
 @export var verticalMovement: bool = true
@@ -99,6 +100,8 @@ func _enemyDie():
 	enemyHurtbox.set_deferred("monitorable", false)
 	
 	MainGame.get_singleton().updateHP(1)
+	
+	explodeSound.play()
 	await animator.animation_finished
 	queue_free()
 	

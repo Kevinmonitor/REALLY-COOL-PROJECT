@@ -14,7 +14,7 @@ metroidvania_system/settings_file="res://MetSysSettings.tres"
 
 [application]
 
-config/name="COOL PROJECT"
+config/name="Ocean Ruins"
 run/main_scene="res://Global/MainGame.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -28,7 +28,6 @@ MetSys="*res://addons/MetroidvaniaSystem/Nodes/Singleton.tscn"
 window/size/viewport_width=640
 window/size/viewport_height=360
 window/stretch/mode="viewport"
-window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 
 [editor]

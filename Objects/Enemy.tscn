@@ -1,9 +1,10 @@
-[gd_scene load_steps=34 format=3 uid="uid://bku0bichp3fwh"]
+[gd_scene load_steps=35 format=3 uid="uid://bku0bichp3fwh"]
 
 [ext_resource type="Script" uid="uid://b2e4vtfx7poo" path="res://Objects/Enemy.gd" id="1_uw8k5"]
 [ext_resource type="Shader" uid="uid://cnnlclc6xurv2" path="res://Objects/EnemyFlash.gdshader" id="2_x2rdu"]
 [ext_resource type="Texture2D" uid="uid://cow76n8thcead" path="res://Textures/Effects/enemyBoom.png" id="3_t58j0"]
 [ext_resource type="Texture2D" uid="uid://dp5ifpte1hoq8" path="res://Textures/enemySheet.png" id="4_jo6no"]
+[ext_resource type="AudioStream" uid="uid://b2dsqm0yasom0" path="res://Sounds/explosion.wav" id="5_a5uau"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ov2mc"]
 size = Vector2(13, 13)
@@ -231,7 +232,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ubygi"]
 size = Vector2(11.25, 11.25)
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("enemyHitbox", "enemyHurtbox", "enemyDetection", "animator", "shaderAnimator")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("enemyHitbox", "enemyHurtbox", "enemyDetection", "animator", "shaderAnimator", "explodeSound")]
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_uw8k5")
@@ -241,6 +242,7 @@ enemyHurtbox = NodePath("HurtboxArea")
 enemyDetection = NodePath("Detection")
 animator = NodePath("AnimatedSprite2D")
 shaderAnimator = NodePath("AnimatedSprite2D/AnimationPlayer")
+explodeSound = NodePath("AudioStreamPlayer2D")
 enemyHP = 5.0
 
 [node name="HurtboxArea" type="Area2D" parent="."]
@@ -285,6 +287,10 @@ libraries = {
 [node name="CollisionBox" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ubygi")
 debug_color = Color(0.364977, 0.636107, 0.377499, 0.784314)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_a5uau")
+volume_db = -1.0
 
 [connection signal="body_entered" from="HurtboxArea" to="." method="_on_hurtbox_area_body_entered"]
 [connection signal="area_entered" from="HitboxArea" to="." method="_on_hitbox_area_area_entered"]
