@@ -5,6 +5,7 @@ class_name MainGame
 @export var playerPath: PlatformerController2D
 @export var startMap: String
 @export var interface: CanvasLayer
+@export var musicPlayer: AudioStreamPlayer2D
 
 const SaveManager = preload("res://addons/MetroidvaniaSystem/Template/Scripts/SaveManager.gd")
 const SAVE_PATH = "user://save_data.sav"
@@ -26,6 +27,7 @@ var playerDrownDelay: float = 1.0 # after running out of air the player starts l
 func _ready() -> void:
 	
 	init_player()
+	musicPlayer.play()
 	get_script().set_meta(&"singleton", self)
 	
 	MetSys.reset_state()
@@ -57,7 +59,7 @@ func _ready() -> void:
 	# Load the starting room.
 	load_room(startMap)
 	
-	playerPath.global_position = Vector2(25, 650)
+	playerPath.global_position = Vector2(16, 512)
 	add_module("RoomTransitions.gd")
 
 # Returns this node from anywhere.
@@ -68,7 +70,7 @@ func init_player():
 	interface._updateHPBar(playerCurrentHP)
 	
 func updateHP(addition: int) -> void:
-	playerCurrentHP += addition
+	playerCurrentHP = clamp(playerCurrentHP+addition, -1, playerMaxHP)
 	interface._updateHPBar(playerCurrentHP)
 	
 func init_room():
