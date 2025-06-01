@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://b851vy2gbwdnd"]
+[gd_scene load_steps=13 format=3 uid="uid://b851vy2gbwdnd"]
 
 [ext_resource type="Script" uid="uid://bqisc7psx6g3d" path="res://Global/MainGame.gd" id="1_11x6e"]
 [ext_resource type="SpriteFrames" uid="uid://c2hfd7th7vwj2" path="res://Controllers/PlatformerPlayer/PlayerUIFace.tres" id="2_1vynr"]
 [ext_resource type="Script" uid="uid://nrg14hbcm8e2" path="res://Global/GameInterface.gd" id="2_ilkga"]
 [ext_resource type="PackedScene" uid="uid://cn1hyq7obgxg8" path="res://Global/Player.tscn" id="2_t4kyf"]
 [ext_resource type="AudioStream" uid="uid://ybjbyxjafr4t" path="res://Sounds/pilgrimage.mp3" id="5_g4r30"]
+[ext_resource type="Texture2D" uid="uid://bwcv5o3k1uk7s" path="res://Textures/endingScene.png" id="6_tct1y"]
 
 [sub_resource type="Animation" id="Animation_tct1y"]
 length = 0.001
@@ -69,6 +70,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_ia7of"]
 resource_name = "end"
@@ -93,6 +106,18 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(4.13333, 7.06667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(4.13333, 7.03333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -171,13 +196,21 @@ offset_top = -18.0
 offset_right = 685.0
 offset_bottom = 389.0
 
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+z_index = 3
+offset_right = 1280.0
+offset_bottom = 720.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_tct1y")
+
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
-z_index = 1
-offset_left = 244.0
-offset_top = 150.0
-offset_right = 403.0
-offset_bottom = 214.0
+z_index = 4
+offset_left = 475.0
+offset_top = 293.0
+offset_right = 634.0
+offset_bottom = 357.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "You win!
 Thanks for playing!!!"

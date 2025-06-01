@@ -63,6 +63,7 @@ func _ready() -> void:
 	load_room(startMap)
 	
 	playerPath.global_position = Vector2(160, 320)
+	#playerPath.global_position = Vector2(64, 128)
 	#playerPath.global_position = Vector2(1152, 288)
 	#playerPath.global_position = Vector2(48, 80)
 	add_module("RoomTransitions.gd")

@@ -433,7 +433,7 @@ func _process(_delta):
 	
 	_processSounds()
 	_damageFlashHandling()
-	Text.text =  str(underwater) + str(jumps) + str(jumpCount)
+	#Text.text =  str(underwater) + str(jumps) + str(jumpCount)
 	
 	#INFO animations
 	#directions
