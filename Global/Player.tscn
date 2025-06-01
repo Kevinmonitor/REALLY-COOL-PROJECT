@@ -1,11 +1,18 @@
-[gd_scene load_steps=39 format=3 uid="uid://cn1hyq7obgxg8"]
+[gd_scene load_steps=47 format=3 uid="uid://cn1hyq7obgxg8"]
 
 [ext_resource type="Script" uid="uid://b67s8qwo1mh4w" path="res://Controllers/PlatformerPlayer/PlayerScript.gd" id="1_qoh8g"]
 [ext_resource type="Texture2D" uid="uid://c7hgdqmntousv" path="res://Textures/Player/playerSheet - Copy.png" id="2_5h5t2"]
+[ext_resource type="Texture2D" uid="uid://dhkohndjt6d7v" path="res://Textures/Player/Light.png" id="2_07p0w"]
 [ext_resource type="Shader" uid="uid://cnnlclc6xurv2" path="res://Objects/EnemyFlash.gdshader" id="2_mybdt"]
 [ext_resource type="Texture2D" uid="uid://cob5tmfm6670" path="res://Textures/Player/playerSheet.png" id="2_x6ms2"]
 [ext_resource type="Texture2D" uid="uid://bf54187gafb30" path="res://Textures/Player/chargeTexture.png" id="3_svwnr"]
 [ext_resource type="Script" uid="uid://sx7l0uy7b8cb" path="res://Global/PlayerAttackCode.gd" id="4_xixh4"]
+[ext_resource type="AudioStream" uid="uid://cqu6rsf88g26u" path="res://Sounds/walking/dirt_3.wav" id="7_tpa6q"]
+[ext_resource type="AudioStream" uid="uid://cdnax8o2cipgw" path="res://Sounds/187025__lloydevans09__jump1.wav" id="8_4a2rm"]
+[ext_resource type="AudioStream" uid="uid://btayyplrhrie" path="res://Sounds/sword_slash.wav" id="9_5jn53"]
+[ext_resource type="AudioStream" uid="uid://b53pk8nrh31nb" path="res://Sounds/dash.wav" id="10_tpa6q"]
+[ext_resource type="AudioStream" uid="uid://du7sw63671gyh" path="res://Sounds/upgrade_select.wav" id="11_tpa6q"]
+[ext_resource type="AudioStream" uid="uid://bah85oq81phfl" path="res://Sounds/damage_1.wav" id="12_07p0w"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cfehg"]
 radius = 9.0
@@ -268,7 +275,25 @@ animations = [{
 radius = 9.0
 height = 20.0
 
-[node name="PlayerController" type="CharacterBody2D" node_paths=PackedStringArray("PlayerSprite", "shaderAnimator", "PlayerCollider", "WallRaycast", "FloorRaycast", "DashProgress", "Text", "SlashAttack", "WaterCollisionArea", "leftRaycast", "middleRaycast", "rightRaycast")]
+[sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_7vm2c"]
+clip_count = 5
+clip_0/name = &"jump"
+clip_0/stream = ExtResource("8_4a2rm")
+clip_0/auto_advance = 0
+clip_1/name = &"dash"
+clip_1/stream = ExtResource("9_5jn53")
+clip_1/auto_advance = 0
+clip_2/name = &"slash"
+clip_2/stream = ExtResource("10_tpa6q")
+clip_2/auto_advance = 0
+clip_3/name = &"item"
+clip_3/stream = ExtResource("11_tpa6q")
+clip_3/auto_advance = 0
+clip_4/name = &"damage"
+clip_4/stream = ExtResource("12_07p0w")
+clip_4/auto_advance = 0
+
+[node name="PlayerController" type="CharacterBody2D" node_paths=PackedStringArray("PlayerSprite", "shaderAnimator", "soundAnimator", "soundAnimatorLooping", "PlayerCollider", "WallRaycast", "FloorRaycast", "DashProgress", "Text", "SlashAttack", "WaterCollisionArea", "leftRaycast", "middleRaycast", "rightRaycast")]
 z_index = 1
 collision_layer = 2
 collision_mask = 137
@@ -278,6 +303,8 @@ safe_margin = 0.2
 script = ExtResource("1_qoh8g")
 PlayerSprite = NodePath("AnimatedSprite2D")
 shaderAnimator = NodePath("AnimatedSprite2D/AnimationPlayer")
+soundAnimator = NodePath("AudioAction")
+soundAnimatorLooping = NodePath("AudioWalk")
 PlayerCollider = NodePath("CollisionShape2D")
 WallRaycast = NodePath("WallCast")
 FloorRaycast = NodePath("DownCast")
@@ -322,7 +349,13 @@ position = Vector2(0, 6.5)
 shape = SubResource("CapsuleShape2D_cfehg")
 debug_color = Color(0.352941, 0.517647, 0.898039, 0.611765)
 
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 2.0
+texture = ExtResource("2_07p0w")
+texture_scale = 1.5
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+light_mask = 0
 texture_filter = 1
 material = SubResource("ShaderMaterial_7vm2c")
 position = Vector2(-3, 0)
@@ -398,3 +431,11 @@ animation = &"slash"
 position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_5h5t2")
 debug_color = Color(1.44392e-07, 0.539707, 0.0767229, 0.42)
+
+[node name="AudioWalk" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_tpa6q")
+volume_db = 2.0
+
+[node name="AudioAction" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamInteractive_7vm2c")
+volume_db = 2.0

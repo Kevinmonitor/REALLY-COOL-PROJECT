@@ -3,6 +3,7 @@ extends CharacterBody2D
 class_name ObjectBitch
 
 @export var moveSpeed = 60
+@export var idleSpeed = 60
 
 @export var enemyHitbox: Area2D
 @export var enemyHurtbox: Area2D
@@ -19,7 +20,7 @@ class_name ObjectBitch
 var direction : Vector2 = Vector2.RIGHT
 
 var isDamaged: bool = false
-var maxDamageTimer: float = 0.8
+var maxDamageTimer: float = 1.5
 
 var isChasingPlayer: bool = false
 
@@ -68,7 +69,7 @@ func _moveEnemy(delta):
 		
 	if enemyHP > 0:
 		if !player:
-			velocity.x = direction.x * moveSpeed * 20 * delta
+			velocity.x = direction.x * idleSpeed * 10 * delta
 		else:
 			_chasePlayer()
 			
@@ -84,6 +85,7 @@ func _on_hurtbox_area_body_entered(body: Node2D) -> void:
 		direction.x *= -1
 	elif body is PlatformerController2D and !isDamaged:
 		print("collided with player")
+		body.hit_by_spike = false
 		body._owFuck()
 
 func _enemyDie():

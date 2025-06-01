@@ -14,6 +14,8 @@ class_name PlatformerController2D
 
 @export var PlayerSprite: AnimatedSprite2D
 @export var shaderAnimator: AnimationPlayer
+@export var soundAnimator: AudioStreamPlayer2D
+@export var soundAnimatorLooping: AudioStreamPlayer2D
 
 @export var PlayerCollider: CollisionShape2D
 
@@ -228,24 +230,57 @@ var underwater: bool = false
 # bonus stuff
 
 var reset_position: Vector2
+var checkpoint_position: Vector2
+var hit_by_spike: bool = false;
 
 # Indicates that the player has an event happening and can't be controlled.
 var event: bool
 
+
+
+# YASS
+
+func _updateAudio(audio_name: String):
+	if audio_name == "none":
+		soundAnimator.stop()
+	else:
+		soundAnimator.play()
+		soundAnimator["parameters/switch_to_clip"] = audio_name
+		
+func _updateAudioWalk(audio_name: String):
+	if audio_name == "none":
+		soundAnimatorLooping.stop()
+	else:
+		soundAnimatorLooping.play()
+		
+
+
 # hit by spike. player returns to start of room. subtract HP
-
-
 
 func _owFuck():
 	
 	if damageBuffer > 0: pass
+	
 	else:
+		_updateAudio("damage")
+		
 		MainGame.get_singleton().updateHP(-1)
 		print(MainGame.get_singleton().playerCurrentHP)
 		_startDamageBuffer()
+		
+		if hit_by_spike:
+			position = checkpoint_position if checkpoint_position else reset_position
+			hit_by_spike = false
+		
+		elif !underwater:
+			velocity.y = jumpMagnitude * 1.5
+			if abs(velocity.x) > 0:
+				velocity.x *= -1.5
+		
 		if MainGame.get_singleton().playerCurrentHP <= 0:
+			
 			position = reset_position
-			MainGame.get_singleton().updateHP(3)
+			MainGame.get_singleton().updateHP(5)
 			MainGame.get_singleton().load_room(MetSys.get_current_room_name())
 
 func _startDamageBuffer():
@@ -268,6 +303,7 @@ func _damageFlashHandling():
 func _checkWater():
 	currentWaterCharge = clamp(currentWaterCharge - 1.0/60.0, 0.0, waterChargeTime*1.01)
 	if currentWaterCharge > 0.0:
+		#_updateAudio("item")
 		set_collision_mask_value(8, true)
 	else:
 		set_collision_mask_value(8, false);
@@ -379,11 +415,27 @@ func _updateData():
 
 
 
+func _processSounds():
+	
+	if abs(velocity.x) > 0.1 and is_on_floor():
+		if !soundAnimatorLooping.playing: _updateAudioWalk("run")
+	else:
+		_updateAudioWalk("none")
+		
+	#if velocity.y < 0 and jump and !dashing: 
+		#_updateAudio("jump")
+	#elif dashing: 
+		#_updateAudio("dash")
+	#elif slash:
+		#_updateAudio("slash")
+	#else:
+		#_updateAudio("none")
 
 func _process(_delta):
 	
+	_processSounds()
 	_damageFlashHandling()
-	Text.text =  "\nmovement:" + str(rightHold)
+	#Text.text =  "\nmovement:" + str(rightHold)
 	
 	#INFO animations
 	#directions
@@ -412,6 +464,7 @@ func _process(_delta):
 		if abs(velocity.x) > 0.1 and is_on_floor():
 			anim.speed_scale = 1
 			anim.play("run")
+			
 		elif abs(velocity.x) <= 0.1 and is_on_floor():
 			anim.speed_scale = 1
 			anim.play("idle")
@@ -453,6 +506,7 @@ func _process(_delta):
 			#anim.speed_scale = 1
 			#anim.play("roll")
 			#
+	
 	_handleDashProgressBar()
 		
 func _handleDashProgressBar():
@@ -478,6 +532,8 @@ func _spawnDashImage():
 	ghost.scale.x = anim.scale.x
 	ghost.scale.y = anim.scale.y
 		
+
+
 
 
 
@@ -727,7 +783,9 @@ func _slashAttack():
 	
 	if isSlashReady and dashTap and currentCharge < dashChargeTime and !slide:
 		
+		_updateAudio("none")
 		SlashAttack._activateSlash()
+		_updateAudio("slash")
 		
 		await get_tree().create_timer(slashTime).timeout
 		# then, cooldown slash
@@ -768,6 +826,7 @@ func _handleDash():
 	if eightWayDash and dashCount > 0 and !rolling and ( (isReleaseCharge and currentCharge >= dashChargeTime) or (dashTap and currentCharge >= dashChargeTime) ):
 		
 		SlashAttack._activateSlash()
+		_updateAudio("dash")
 		
 		var input_direction = Input.get_vector("left", "right", "up", "down")
 		var dTime = 0.0625 * dashLength
@@ -825,15 +884,23 @@ func _coyoteTime():
 func _jump():
 	print("jump")
 	if jumpCount > 0:
+		_updateAudio("jump")
 		velocity.y = -jumpMagnitude
 		jumpCount += -1
 		jumpWasPressed = false
+
+
+
+
+
+
 
 # if jumping immediately after a dash, do a super jump with very high velocity
 
 func _superJump():
 	print("superjump")
 	if jumpCount > 0:
+		_updateAudio("jump")
 		velocity.x *= 1.85
 		decelerationDuration = 0.4
 		velocity.y = -jumpMagnitude
@@ -843,6 +910,7 @@ func _superJump():
 func _wallJump(kickStrength):
 	
 	print("walljump")
+	_updateAudio("jump")
 	var horizontalWallKick = abs(jumpMagnitude * cos(wallKickAngle * (PI / 180)))
 	var verticalWallKick = abs(jumpMagnitude * sin(wallKickAngle * (PI / 180)))
 	velocity.y = -verticalWallKick * 1.4 * (0.6 if underwater else 1.0)
@@ -859,6 +927,7 @@ func _wallJump(kickStrength):
 		
 func _superWallJump(kickStrength):
 	
+	_updateAudio("jump")
 	var horizontalWallKick = abs(jumpMagnitude * cos(wallKickAngle * (PI / 180)))
 	var verticalWallKick = abs(jumpMagnitude * sin(wallKickAngle * (PI / 180)))
 	decelerationDuration = 0.4

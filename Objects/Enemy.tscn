@@ -12,7 +12,7 @@ size = Vector2(13, 13)
 size = Vector2(30, 30)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8ks7m"]
-size = Vector2(112, 42)
+size = Vector2(212, 60)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d6bnv"]
 shader = ExtResource("2_x2rdu")
@@ -189,6 +189,8 @@ animations = [{
 }]
 
 [sub_resource type="Animation" id="Animation_e117s"]
+length = 0.100005
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -233,6 +235,7 @@ size = Vector2(11.25, 11.25)
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_uw8k5")
+idleSpeed = 1
 enemyHitbox = NodePath("HitboxArea")
 enemyHurtbox = NodePath("HurtboxArea")
 enemyDetection = NodePath("Detection")
@@ -264,9 +267,11 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="DetectionBox" type="CollisionShape2D" parent="Detection"]
+position = Vector2(-1, -1)
 shape = SubResource("RectangleShape2D_8ks7m")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+light_mask = 0
 material = SubResource("ShaderMaterial_d6bnv")
 sprite_frames = SubResource("SpriteFrames_ljhyw")
 animation = &"enemyHurt"
