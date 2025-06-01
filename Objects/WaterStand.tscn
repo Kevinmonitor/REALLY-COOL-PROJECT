@@ -1,16 +1,77 @@
-[gd_scene load_steps=3 format=3 uid="uid://ckh38f7m3rrw4"]
+[gd_scene load_steps=9 format=3 uid="uid://ckh38f7m3rrw4"]
 
-[ext_resource type="PackedScene" uid="uid://cdkiq2e5i4530" path="res://Objects/DashRefill.tscn" id="1_j27vn"]
 [ext_resource type="Script" uid="uid://bdadt6fct0ask" path="res://Objects/WaterStand.gd" id="2_22cqp"]
+[ext_resource type="Texture2D" uid="uid://c7hgdqmntousv" path="res://Textures/Player/playerSheet - Copy.png" id="2_acj4e"]
 
-[node name="WaterStand" instance=ExtResource("1_j27vn")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dx8u"]
+atlas = ExtResource("2_acj4e")
+region = Rect2(0, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uau7p"]
+atlas = ExtResource("2_acj4e")
+region = Rect2(48, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22cqp"]
+atlas = ExtResource("2_acj4e")
+region = Rect2(96, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_acj4e"]
+atlas = ExtResource("2_acj4e")
+region = Rect2(144, 192, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j27vn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dx8u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uau7p")
+}],
+"loop": true,
+"name": &"glow",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22cqp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_acj4e")
+}],
+"loop": true,
+"name": &"inactive_glow",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfbdh"]
+size = Vector2(71.2501, 49.2933)
+
+[node name="WaterStand" type="Area2D"]
+collision_layer = 32
+collision_mask = 2
+priority = 1
 script = ExtResource("2_22cqp")
 
-[node name="AnimatedSprite2D" parent="." index="0"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 self_modulate = Color(0.881868, 0.47676, 0.127577, 1)
+sprite_frames = SubResource("SpriteFrames_j27vn")
+animation = &"inactive_glow"
+frame_progress = 0.499322
 
-[node name="CollisionShape2D" parent="." index="1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
+position = Vector2(-4.76837e-07, -4.76837e-07)
+scale = Vector2(0.631578, 0.912904)
+shape = SubResource("RectangleShape2D_xfbdh")
 
-[node name="RichTextLabel" parent="." index="2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
 visible = false
+texture_filter = 3
+offset_left = -29.0
+offset_top = -39.0
+offset_right = 29.0
+offset_bottom = 1.0
+theme_override_font_sizes/normal_font_size = 8
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
