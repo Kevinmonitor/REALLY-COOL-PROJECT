@@ -273,15 +273,14 @@ func _owFuck():
 			hit_by_spike = false
 		
 		elif !underwater:
-			velocity.y = jumpMagnitude * 1.5
+			velocity.y = -jumpMagnitude * 1.5
 			if abs(velocity.x) > 0:
-				velocity.x *= -1.5
+				velocity.x = -jumpMagnitude
 		
 		if MainGame.get_singleton().playerCurrentHP <= 0:
 			
-			position = reset_position
+			kill()
 			MainGame.get_singleton().updateHP(5)
-			MainGame.get_singleton().load_room(MetSys.get_current_room_name())
 
 func _startDamageBuffer():
 	damageBuffer = 999
@@ -359,7 +358,7 @@ func _updateData():
 	jumpCount = jumps
 	
 	dashMagnitude = 1.0
-	dashCount = dashes
+	#dashCount = dashes
 	
 	maxSpeed = normalMaxSpeed
 	maxSpeedLock = maxSpeed
@@ -829,7 +828,7 @@ func _handleDash():
 		_updateAudio("dash")
 		
 		var input_direction = Input.get_vector("left", "right", "up", "down")
-		var dTime = 0.0625 * dashLength
+		var dTime = 0.07 * dashLength
 		velocity.x = 0
 		velocity.y = 0
 		_dashingTime(dTime)
@@ -844,7 +843,7 @@ func _handleDash():
 		else:
 			velocity = dashSpeed * input_direction.normalized()
 		currentCharge = 0.0
-		#dashCount += -1
+		dashCount += -1
 		
 		movementInputMonitoring = Vector2(false, false)
 		_inputPauseReset(dTime)
@@ -862,11 +861,9 @@ func _dashingTime(time):
 	maxSpeed = dashSpeed
 	await get_tree().create_timer(time).timeout
 	_decelerateMaxSpeed(dashSpeed, normalMaxSpeed, decelerationDuration)
-	damageBuffer = 0
 	dashing = false
-
-	
-	
+	await get_tree().create_timer(time*3).timeout
+	damageBuffer = 0
 
 	
 func _bufferJump():
@@ -877,7 +874,7 @@ func _coyoteTime():
 	await get_tree().create_timer(coyoteTime).timeout
 	coyoteActive = false
 	if underwater:
-		jumpCount += 999
+		jumpCount += 1
 	else:
 		jumpCount -= 1
 	
@@ -888,12 +885,6 @@ func _jump():
 		velocity.y = -jumpMagnitude
 		jumpCount += -1
 		jumpWasPressed = false
-
-
-
-
-
-
 
 # if jumping immediately after a dash, do a super jump with very high velocity
 
@@ -1016,4 +1007,5 @@ func kill():
 
 func on_enter():
 	# Position for kill system. Assigned when entering new room (see Game.gd).
+	checkpoint_position = Vector2(0, 0)
 	reset_position = position

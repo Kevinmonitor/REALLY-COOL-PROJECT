@@ -69,7 +69,7 @@ func _moveEnemy(delta):
 		
 	if enemyHP > 0:
 		if !player:
-			velocity.x = direction.x * idleSpeed * 10 * delta
+			velocity.x = direction.x * idleSpeed * delta
 		else:
 			_chasePlayer()
 			

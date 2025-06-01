@@ -5,7 +5,10 @@ class_name MainGame
 @export var playerPath: PlatformerController2D
 @export var startMap: String
 @export var interface: CanvasLayer
+
 @export var musicPlayer: AudioStreamPlayer2D
+@export var musicAnimationPlayer: AnimationPlayer
+@export var endPlayer: AnimationPlayer
 
 const SaveManager = preload("res://addons/MetroidvaniaSystem/Template/Scripts/SaveManager.gd")
 const SAVE_PATH = "user://save_data.sav"
@@ -59,7 +62,9 @@ func _ready() -> void:
 	# Load the starting room.
 	load_room(startMap)
 	
-	playerPath.global_position = Vector2(16, 512)
+	playerPath.global_position = Vector2(160, 320)
+	#playerPath.global_position = Vector2(1152, 288)
+	#playerPath.global_position = Vector2(48, 80)
 	add_module("RoomTransitions.gd")
 
 # Returns this node from anywhere.
@@ -76,10 +81,17 @@ func updateHP(addition: int) -> void:
 func init_room():
 	MetSys.get_current_room_instance().adjust_camera_limits($PlayerController/Camera2D)
 	player.on_enter()
+	
+func endMusic():
+	musicAnimationPlayer.play("fadeMusic")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+	
+func fadeToEndScreen():
+	endPlayer.play("end")
+	
 
 # This is the main script of the game. It manages the current map and some other stuff.
 #extends "res://addons/MetroidvaniaSystem/Template/Scripts/MetSysGame.gd"

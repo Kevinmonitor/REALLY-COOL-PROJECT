@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b851vy2gbwdnd"]
+[gd_scene load_steps=12 format=3 uid="uid://b851vy2gbwdnd"]
 
 [ext_resource type="Script" uid="uid://bqisc7psx6g3d" path="res://Global/MainGame.gd" id="1_11x6e"]
 [ext_resource type="SpriteFrames" uid="uid://c2hfd7th7vwj2" path="res://Controllers/PlatformerPlayer/PlayerUIFace.tres" id="2_1vynr"]
@@ -6,12 +6,112 @@
 [ext_resource type="PackedScene" uid="uid://cn1hyq7obgxg8" path="res://Global/Player.tscn" id="2_t4kyf"]
 [ext_resource type="AudioStream" uid="uid://ybjbyxjafr4t" path="res://Sounds/pilgrimage.mp3" id="5_g4r30"]
 
-[node name="MainGame" type="Node2D" node_paths=PackedStringArray("playerPath", "interface", "musicPlayer")]
+[sub_resource type="Animation" id="Animation_tct1y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_g4r30"]
+resource_name = "fadeMusic"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -80.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ia7of"]
+_data = {
+&"RESET": SubResource("Animation_tct1y"),
+&"fadeMusic": SubResource("Animation_g4r30")
+}
+
+[sub_resource type="Animation" id="Animation_esjk2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RichTextLabel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ia7of"]
+resource_name = "end"
+length = 8.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0666667, 3.03333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RichTextLabel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(4.13333, 7.06667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_esjk2"]
+_data = {
+&"RESET": SubResource("Animation_esjk2"),
+&"end": SubResource("Animation_ia7of")
+}
+
+[node name="MainGame" type="Node2D" node_paths=PackedStringArray("playerPath", "interface", "musicPlayer", "musicAnimationPlayer", "endPlayer")]
 script = ExtResource("1_11x6e")
 playerPath = NodePath("PlayerController")
-startMap = "res://Maps/Game/KevinLevel01.tscn"
+startMap = "res://Maps/Game/KevinOpener.tscn"
 interface = NodePath("UI")
 musicPlayer = NodePath("AudioStreamPlayer2D")
+musicAnimationPlayer = NodePath("AudioStreamPlayer2D/AnimationPlayer")
+endPlayer = NodePath("CanvasLayer/AnimationPlayer")
 
 [node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("GameScript", "Air", "Lifebar", "Kobiko")]
 layer = 2
@@ -49,3 +149,36 @@ position = Vector2(144, 224)
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_g4r30")
 max_distance = 1e+11
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AudioStreamPlayer2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_ia7of")
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_esjk2")
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+offset_left = -19.0
+offset_top = -18.0
+offset_right = 685.0
+offset_bottom = 389.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+offset_left = 244.0
+offset_top = 150.0
+offset_right = 403.0
+offset_bottom = 214.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "You win!
+Thanks for playing!!!"
+horizontal_alignment = 1

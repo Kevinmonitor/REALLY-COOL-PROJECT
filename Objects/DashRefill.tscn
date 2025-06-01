@@ -55,7 +55,7 @@ script = ExtResource("1_e3jm6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_45wq0")
-animation = &"inactive_glow"
+animation = &"glow"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4.76837e-07, -4.76837e-07)
@@ -63,6 +63,7 @@ scale = Vector2(0.631578, 0.912904)
 shape = SubResource("RectangleShape2D_xfbdh")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
+visible = false
 texture_filter = 3
 offset_left = -29.0
 offset_top = -39.0
