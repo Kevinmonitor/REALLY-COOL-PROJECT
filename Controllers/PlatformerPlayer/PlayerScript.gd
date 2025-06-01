@@ -320,12 +320,14 @@ func _checkUnderwater():
 			terminalVelocity = 150.0
 		jumpHeight = 0.3
 		jumps = 9999
+		
 	else:
 		airTime = clamp(airTime+1.0, 0.0, 8.0);
 		gravityScale = 30.0
 		terminalVelocity = 700.0
 		jumpHeight = 1.8
 		jumps = 1
+		jumpCount = clamp(jumpCount, 0, 1)
 		
 #func _checkWaterBuff():
 	#
@@ -335,9 +337,6 @@ func _checkUnderwater():
 		#waterTile.collision = false
 	#pass
 	#
-
-
-
 
 
 func _ready():
@@ -434,7 +433,7 @@ func _process(_delta):
 	
 	_processSounds()
 	_damageFlashHandling()
-	#Text.text =  "\nmovement:" + str(rightHold)
+	Text.text =  str(underwater) + str(jumps) + str(jumpCount)
 	
 	#INFO animations
 	#directions
@@ -744,12 +743,9 @@ func _physics_process(delta):
 					_superJump()
 				else:
 					_jump()
-
 			
 	#INFO dashing
 	_handleDash()
-
-
 
 	#INFO Corner Cutting
 	if cornerCutting:

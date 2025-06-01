@@ -111,9 +111,3 @@ offset_bottom = 226.0
 scale = Vector2(0.7, 0.7)
 text = "You can get stuck in the water if you're not careful with it!"
 fit_content = true
-
-[connection signal="body_entered" from="MainPlatforms/Spike" to="MainPlatforms/Spike" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@56589" to="MainPlatforms/@Area2D@56589" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@56590" to="MainPlatforms/@Area2D@56590" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@56591" to="MainPlatforms/@Area2D@56591" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@56592" to="MainPlatforms/@Area2D@56592" method="_on_body_entered"]
