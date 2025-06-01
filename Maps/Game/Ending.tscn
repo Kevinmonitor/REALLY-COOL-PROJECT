@@ -18,7 +18,7 @@ size = Vector2(208, 336)
 size = Vector2(20, 160)
 
 [node name="Map" type="Node2D"]
-modulate = Color(0.34902, 0.270588, 0.235294, 1)
+modulate = Color(0.45098, 0.301961, 0.364706, 1)
 
 [node name="RoomInstance" parent="." instance=ExtResource("1_5jq3i")]
 

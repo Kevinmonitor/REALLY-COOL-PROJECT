@@ -68,16 +68,6 @@ position = Vector2(1753, 234)
 [node name="WaterStand3" parent="." instance=ExtResource("7_lg13h")]
 position = Vector2(875, 130)
 
-[node name="RichTextLabel3" type="RichTextLabel" parent="."]
-z_index = 4
-offset_left = 1096.0
-offset_top = 72.0
-offset_right = 1254.0
-offset_bottom = 164.0
-scale = Vector2(0.75, 0.75)
-text = "You can get stuck in the water if you don't use the water stand correctly."
-fit_content = true
-
 [node name="RichTextLabel2" type="RichTextLabel" parent="."]
 offset_left = 660.0
 offset_top = 36.0
@@ -85,22 +75,15 @@ offset_right = 818.0
 offset_bottom = 117.0
 text = "Use the DOWN Key while underwater to sink faster."
 
-[node name="RichTextLabel4" type="RichTextLabel" parent="."]
-offset_left = 404.0
-offset_top = 35.0
-offset_right = 562.0
-offset_bottom = 116.0
-text = "You can jump infinitely underwater."
-
-[node name="RichTextLabel4" type="RichTextLabel" parent="."]
-offset_left = 1317.0
-offset_top = 5.0
-offset_right = 1475.0
-offset_bottom = 86.0
+[node name="RichTextLabel5" type="RichTextLabel" parent="."]
+offset_left = 1281.0
+offset_top = 76.0
+offset_right = 1439.0
+offset_bottom = 157.0
 text = "rest in this air room
 to regain air"
 
-[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+[node name="RichTextLabel6" type="RichTextLabel" parent="."]
 z_index = 5
 offset_left = 1048.0
 offset_top = 5.0
@@ -119,7 +102,7 @@ text = "Touch this label to active water stand"
 position = Vector2(613, 160)
 
 [connection signal="body_entered" from="MainPlatforms/Spike" to="MainPlatforms/Spike" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@27089" to="MainPlatforms/@Area2D@27089" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@27090" to="MainPlatforms/@Area2D@27090" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@27091" to="MainPlatforms/@Area2D@27091" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@27092" to="MainPlatforms/@Area2D@27092" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@23933" to="MainPlatforms/@Area2D@23933" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@23934" to="MainPlatforms/@Area2D@23934" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@23935" to="MainPlatforms/@Area2D@23935" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@23936" to="MainPlatforms/@Area2D@23936" method="_on_body_entered"]
