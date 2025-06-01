@@ -21,7 +21,7 @@ height = 35.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7vm2c"]
 shader = ExtResource("2_mybdt")
 shader_parameter/flash_value = 1.0
-shader_parameter/flash_color = Color(1, 0.287556, 0.327544, 1)
+shader_parameter/flash_color = Color(6.73831e-07, 0.657201, 0.750372, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mybdt"]
 atlas = ExtResource("2_5h5t2")
@@ -272,8 +272,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5h5t2"]
-radius = 9.0
-height = 20.0
+radius = 8.0
+height = 16.0
 
 [sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_7vm2c"]
 clip_count = 5
@@ -428,7 +428,7 @@ animation = &"slash"
 [node name="WaterDetectCollision" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterDetectCollision"]
-position = Vector2(0, 3)
+position = Vector2(0, -13)
 shape = SubResource("CapsuleShape2D_5h5t2")
 debug_color = Color(1.44392e-07, 0.539707, 0.0767229, 0.42)
 

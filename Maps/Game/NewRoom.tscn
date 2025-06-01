@@ -68,13 +68,29 @@ position = Vector2(1753, 234)
 [node name="WaterStand3" parent="." instance=ExtResource("7_lg13h")]
 position = Vector2(875, 130)
 
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+z_index = 4
+offset_left = 1096.0
+offset_top = 72.0
+offset_right = 1254.0
+offset_bottom = 164.0
+scale = Vector2(0.75, 0.75)
+text = "You can get stuck in the water if you don't use the water stand correctly."
+fit_content = true
+
 [node name="RichTextLabel2" type="RichTextLabel" parent="."]
 offset_left = 660.0
 offset_top = 36.0
 offset_right = 818.0
 offset_bottom = 117.0
-text = "Your air is limited! 
-Use the water items responsibly."
+text = "Use the DOWN Key while underwater to sink faster."
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="."]
+offset_left = 404.0
+offset_top = 35.0
+offset_right = 562.0
+offset_bottom = 116.0
+text = "You can jump infinitely underwater."
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_left = 171.0

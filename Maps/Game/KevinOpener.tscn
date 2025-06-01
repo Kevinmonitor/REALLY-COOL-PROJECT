@@ -63,12 +63,16 @@ offset_bottom = 504.0
 text = "Z: JUMP"
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="."]
-offset_left = 768.0
-offset_top = 368.0
-offset_right = 928.0
-offset_bottom = 432.0
+z_index = 3
+offset_left = 784.0
+offset_top = 224.0
+offset_right = 944.0
+offset_bottom = 385.0
 scale = Vector2(0.75, 0.75)
-text = "Slide on walls and jump to walljump"
+text = "Slide on walls and jump to walljump
+
+(Hold the corresponding direction key while on a wall)"
+fit_content = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_left = 176.0

@@ -58,14 +58,17 @@ tile_set = ExtResource("5_encxo")
 script = ExtResource("6_atm67")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 64.0
+offset_left = 80.0
 offset_top = 832.0
-offset_right = 384.0
-offset_bottom = 912.0
+offset_right = 400.0
+offset_bottom = 947.0
 scale = Vector2(0.75, 0.75)
 text = "Dash to boost your distance!
 Hold X to charge, release while holding
-a direction key to dash."
+a direction key to dash.
+
+You can dash diagonally too."
+fit_content = true
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="."]
 offset_left = 288.0
@@ -98,26 +101,3 @@ position = Vector2(128, 896)
 
 [node name="Checkpoint2" parent="." instance=ExtResource("8_vtqcj")]
 position = Vector2(656, 240)
-
-[connection signal="body_entered" from="MainPlatforms/Spike" to="MainPlatforms/Spike" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76318" to="MainPlatforms/@Area2D@76318" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76319" to="MainPlatforms/@Area2D@76319" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76320" to="MainPlatforms/@Area2D@76320" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76321" to="MainPlatforms/@Area2D@76321" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76322" to="MainPlatforms/@Area2D@76322" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76323" to="MainPlatforms/@Area2D@76323" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76324" to="MainPlatforms/@Area2D@76324" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76325" to="MainPlatforms/@Area2D@76325" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76326" to="MainPlatforms/@Area2D@76326" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76327" to="MainPlatforms/@Area2D@76327" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76328" to="MainPlatforms/@Area2D@76328" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76329" to="MainPlatforms/@Area2D@76329" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76330" to="MainPlatforms/@Area2D@76330" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76331" to="MainPlatforms/@Area2D@76331" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76332" to="MainPlatforms/@Area2D@76332" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76333" to="MainPlatforms/@Area2D@76333" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76334" to="MainPlatforms/@Area2D@76334" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76335" to="MainPlatforms/@Area2D@76335" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76336" to="MainPlatforms/@Area2D@76336" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76337" to="MainPlatforms/@Area2D@76337" method="_on_body_entered"]
-[connection signal="body_entered" from="MainPlatforms/@Area2D@76338" to="MainPlatforms/@Area2D@76338" method="_on_body_entered"]
