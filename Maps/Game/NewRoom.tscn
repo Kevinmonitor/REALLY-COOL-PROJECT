@@ -92,6 +92,22 @@ offset_right = 562.0
 offset_bottom = 116.0
 text = "You can jump infinitely underwater."
 
+[node name="RichTextLabel4" type="RichTextLabel" parent="."]
+offset_left = 1317.0
+offset_top = 5.0
+offset_right = 1475.0
+offset_bottom = 86.0
+text = "rest in this air room
+to regain air"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+z_index = 5
+offset_left = 1048.0
+offset_top = 5.0
+offset_right = 1206.0
+offset_bottom = 86.0
+text = "you can jump infinitely in water"
+
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_left = 171.0
 offset_top = 141.0
@@ -101,3 +117,9 @@ text = "Touch this label to active water stand"
 
 [node name="Checkpoint" parent="." instance=ExtResource("9_g2fd8")]
 position = Vector2(613, 160)
+
+[connection signal="body_entered" from="MainPlatforms/Spike" to="MainPlatforms/Spike" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@27089" to="MainPlatforms/@Area2D@27089" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@27090" to="MainPlatforms/@Area2D@27090" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@27091" to="MainPlatforms/@Area2D@27091" method="_on_body_entered"]
+[connection signal="body_entered" from="MainPlatforms/@Area2D@27092" to="MainPlatforms/@Area2D@27092" method="_on_body_entered"]
